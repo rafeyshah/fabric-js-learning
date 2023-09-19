@@ -1,24 +1,29 @@
-
 button {
   width: 70px;
   height: 35px;
 }
 
-.container{
+.container {
   display: flex;
   justify-content: space-around;
-  margin-top: 5vh;
+  margin-top: 10vh;
 }
 
-.right-panel{
+.right-panel {
   display: flex;
-  /* align-items: center; */
-  justify-content: center;
+  flex-direction: column;
 }
 
-.right-panel > button {
-  margin-left: 2rem;
-  margin-top: 5rem;
+.right-panel div {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid black;
+}
+
+.right-panel > div > button {
+  margin: 0 1rem;
 }
 
 #canvas {
