@@ -10,6 +10,17 @@ button {
   margin-top: 5vh;
 }
 
+.right-panel{
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+}
+
+.right-panel > button {
+  margin-left: 2rem;
+  margin-top: 5rem;
+}
+
 #canvas {
   /* margin: 20px 20px; */
   border: 1px solid black;
