@@ -1,7 +1,7 @@
-button {
+/* button {
   width: 70px;
   height: 35px;
-}
+} */
 
 .container {
   display: flex;
@@ -12,6 +12,7 @@ button {
 .right-panel {
   display: flex;
   flex-direction: column;
+  margin-left: 10rem;
 }
 
 .right-panel div {
