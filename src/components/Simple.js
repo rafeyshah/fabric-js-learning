@@ -431,35 +431,35 @@ function Simple() {
 
     return (
         <>
-            <div>
+            <div className='panel-item'>
                 <Button onClick={addSquare}>Add Square</Button>
                 <Button onClick={addRectangle}>Add Rectangle</Button>
                 <Button onClick={addCircle}>Add Circle</Button>
                 <Button onClick={addTriangle}>Add Triangle</Button>
                 <Button onClick={addPolygon}>Add Polygon</Button>
             </div>
-            <div>
+            <div className='panel-item'> 
                 <Button onClick={line}>Add Line</Button>
                 <Button onClick={addText}>Text</Button>
                 <Button onClick={editableText}>Edit Text</Button>
                 <Button onClick={addPattern}>Pattern</Button>
             </div>
-            <div>
+            <div className='panel-item'>
                 <Button onClick={addImage}>Image (simple)</Button>
                 <Button onClick={addImageFromUrl}>Image (URL)</Button>
             </div>
-            <div>
+            <div className='panel-item'>
                 <Button onClick={firstGradient}>First Gradient</Button>
                 <Button onClick={secondGradient}>Second Gradient</Button>
                 <Button onClick={thirdGradient}>Third Gradient</Button>
             </div>
-            <div>
+            <div className='panel-item'>
                 <Button onClick={arcOne}>Arc 1</Button>
                 <Button onClick={arcTwo}>Arc 2</Button>
                 <Button onClick={arcThree}>Arc 3</Button>
                 <Button onClick={arcFour}>Arc 4</Button>
             </div>
-            <div>
+            <div className='panel-item'>
                 <Button onClick={svgPathOne}>SVG Path 1</Button>
                 <Button onClick={svgPathTwo}>SVG Path 2</Button>
                 <Button onClick={svgPathThree}>SVG Path 3</Button>

@@ -15,16 +15,38 @@
   margin-left: 10rem;
 }
 
-.right-panel div {
+.panel-item {
   display: flex;
   justify-content: flex-start;
-  margin-top: 2rem;
-  padding-bottom: 2rem;
+  margin-top: 10px;
+  padding-bottom: 10px;
   border-bottom: 1px solid black;
 }
 
-.right-panel > div > button {
+/* .colorpicker {
+  display: flex;
+  flex-direction: column;
+} */
+
+.sketch-picker {
+  position: absolute;
+  top: 15%;
+  right: 2%;
+}
+
+.right-panel > div > button,
+p {
   margin: 0 1rem;
+}
+
+.colorpicker > div {
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.button-object {
+  margin-left: 20px;
 }
 
 #canvas {
