@@ -5,7 +5,7 @@ import Object from './Object';
 
 
 function RightPanel() {
-    const [menuPanel, setMenuPanel] = useState('simple')
+    const [menuPanel, setMenuPanel] = useState("simple")
     return (
 
         <div className='right-panel' >
@@ -21,8 +21,8 @@ function RightPanel() {
                 </Nav.Item>
             </Nav>
 
-            {menuPanel == "simple" && <Simple />}
-            {menuPanel == "object" && <Object />}
+            {menuPanel === "simple" && <Simple />}
+            {menuPanel === "object" && <Object />}
 
         </div>
     )

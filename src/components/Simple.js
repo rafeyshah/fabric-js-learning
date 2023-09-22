@@ -431,7 +431,7 @@ function Simple() {
 
     return (
         <>
-            <div className='panel-item'>
+            <div style={{marginTop: "50px"}} className='panel-item'>
                 <Button onClick={addSquare}>Add Square</Button>
                 <Button onClick={addRectangle}>Add Rectangle</Button>
                 <Button onClick={addCircle}>Add Circle</Button>

@@ -20,7 +20,6 @@
   justify-content: flex-start;
   margin-top: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid black;
 }
 
 /* .colorpicker {
@@ -47,6 +46,27 @@ p {
 
 .button-object {
   margin-left: 20px;
+}
+
+.custom-slider {
+  margin-left: 15px;
+}
+
+.object-buttons button{
+  margin-left: 5px
+}
+
+.pressed {
+  background: #0d6efd !important;
+  color: white !important;
+}
+
+.originX > input {
+  margin-left: 10px;
+}
+
+.originY > input {
+  margin-left: 10px;
 }
 
 #canvas {
