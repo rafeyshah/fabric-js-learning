@@ -269,7 +269,6 @@ function Simple() {
             stroke: 'blue',
             strokeWidth: 2,
             fill: '',
-            selectable: false
         });
 
 

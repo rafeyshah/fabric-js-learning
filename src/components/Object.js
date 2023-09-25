@@ -39,7 +39,6 @@ function Object() {
         let activeObject = canvasObj.getActiveObject()
         setActiveObject(activeObject)
         canvasObj.renderAll()
-        console.log("Active Object: ", activeObject);
     }, [canvasObj])
 
     const fillColorFunc = (clr) => {
@@ -310,7 +309,6 @@ function Object() {
         activeObject.set({
             clipPath: clipPath
         })
-        console.log("active object: ", activeObject);
         canvasObj.renderAll()
     }
 
