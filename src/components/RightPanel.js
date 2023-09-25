@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Simple from './Simple'
 import Nav from 'react-bootstrap/Nav';
 import Object from './Object';
+import CanvasProperties from './CanvasProperties';
 
 
 function RightPanel() {
@@ -19,10 +20,14 @@ function RightPanel() {
                 <Nav.Item>
                     <Nav.Link eventKey="object">Object Properties</Nav.Link>
                 </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link eventKey="canvas">Canvas</Nav.Link>
+                </Nav.Item>
             </Nav>
 
             {menuPanel === "simple" && <Simple />}
             {menuPanel === "object" && <Object />}
+            {menuPanel === "canvas" && <CanvasProperties />}
 
         </div>
     )

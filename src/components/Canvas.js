@@ -3,11 +3,14 @@ import { CanvasStore } from '../store/Context';
 import { fabric } from 'fabric';
 function Canvas() {
     const {
-        setCanvasObj
+        setCanvasObj,
+        image,
+        setImage
     } = useContext(CanvasStore);
 
 
     const canvasRef = useRef(null);
+    const imageRef = useRef(null)
 
     useEffect(() => {
         const newCanvas = new fabric.Canvas(canvasRef.current, {
@@ -16,7 +19,7 @@ function Canvas() {
         });
 
         setCanvasObj(newCanvas)
-
+        setImage(imageRef)
 
         // Clean up the canvas when the component unmounts
         return () => {
@@ -27,6 +30,8 @@ function Canvas() {
     return (
         <>
             <canvas id='canvas' ref={canvasRef}></canvas>
+            Image:
+            <img ref={imageRef} />
         </>
     )
 }

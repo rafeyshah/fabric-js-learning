@@ -1,9 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap';
+import { fabric } from 'fabric';
 import { SketchPicker } from 'react-color';
 import { CanvasStore } from '../store/Context';
+import cube from './cube.jpg'
+import TextProperties from './TextProperties';
+
 
 function Object() {
+    const {
+        canvasObj
+    } = useContext(CanvasStore);
+
     const [color, setColor] = useState()
     const [fillColor, setFillColor] = useState(false)
     const [strokeColor, setStrokeColor] = useState()
@@ -15,6 +23,10 @@ function Object() {
     const [noScaleCacheCheck, setNoScaleCacheCheck] = useState(false)
     const [controlCheckBox, setControlCheckBox] = useState(false)
     const [transparentCornersCheckBox, setTransparentCornersCheckBox] = useState(false)
+    const [removeBordersCheckBox, setRemoveBordersCheckBox] = useState(false)
+    const [sendToBack, setSendToBack] = useState(false)
+    const [sendToFront, setSendToFront] = useState(false)
+    const [centeredRotation, setCenteredRotation] = useState(false)
     const [lockHorizontalMov, setHorizontalMov] = useState(false)
     const [lockVerticalMov, setVerticalMov] = useState(false)
     const [lockHorizontalScaling, setLockHorizontalScaling] = useState(false)
@@ -23,13 +35,12 @@ function Object() {
 
     const [activeObject, setActiveObject] = useState()
 
-    const {
-        canvasObj
-    } = useContext(CanvasStore);
-
     useEffect(() => {
-        setActiveObject(canvasObj.getActiveObject())
-    }, [activeObject, canvasObj])
+        let activeObject = canvasObj.getActiveObject()
+        setActiveObject(activeObject)
+        canvasObj.renderAll()
+        console.log("Active Object: ", activeObject);
+    }, [canvasObj])
 
     const fillColorFunc = (clr) => {
         setColor(clr.hex);
@@ -198,7 +209,7 @@ function Object() {
         canvasObj.renderAll()
     }
 
-    const transparentCornersCheckBoxFunc =  (e) => {
+    const transparentCornersCheckBoxFunc = (e) => {
         let activeObject = canvasObj.getActiveObject()
         let checkBoxTemp = !transparentCornersCheckBox
         setTransparentCornersCheckBox(checkBoxTemp)
@@ -206,9 +217,114 @@ function Object() {
         canvasObj.renderAll()
     }
 
+    const removeBordersFunc = (e) => {
+        let checkBoxTemp = !removeBordersCheckBox
+        setRemoveBordersCheckBox(checkBoxTemp)
+        activeObject.hasBorders = checkBoxTemp
+        canvasObj.renderAll()
+    }
+
+    const centeredRotationFunc = (e) => {
+        let checkBoxTemp = !centeredRotation
+        setCenteredRotation(checkBoxTemp)
+        activeObject.centeredRotation = checkBoxTemp
+        canvasObj.renderAll()
+    }
+
+    const bringBackwards = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        canvasObj.sendBackwards(activeObject)
+        canvasObj.renderAll()
+    }
+
+    const bringForwards = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        canvasObj.bringForward(activeObject)
+        canvasObj.renderAll()
+    }
+
+    const sendToFrontFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        canvasObj.bringToFront(activeObject)
+        canvasObj.renderAll()
+    }
+
+    const sendToBackFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        canvasObj.sendToBack(activeObject)
+        canvasObj.renderAll()
+    }
+
+    const gradentifyFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        activeObject.set('fill', new fabric.Gradient({
+            type: 'linear',
+            gradientUnits: 'pixels', // or 'percentage'
+            coords: { x1: 0, y1: 0, x2: 100, y2: 0 },
+            colorStops: [
+                { offset: 0, color: '#ffafbd' },
+                { offset: 1, color: '#ffc3a0' }]
+        }));
+        canvasObj.renderAll()
+    }
+
+    const shadowifyFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        activeObject.set('shadow', new fabric.Shadow(
+            {
+                color: "black",
+                blur: 50,
+                offsetX: 20,
+                offsetY: 20,
+            }
+        ))
+        canvasObj.renderAll()
+    }
+
+    const patternifyFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        const image = new Image();
+        image.src = cube;
+        image.onload = () => {
+            activeObject.set('fill', new fabric.Pattern({
+                source: image,
+                repeat: 'repeat'
+            }))
+        }
+        canvasObj.renderAll()
+    }
+
+    const clipPathFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        let clipPath = new fabric.Circle({ radius: 15, top: 0, left: 0 });
+        activeObject.set({
+            clipPath: clipPath
+        })
+        canvasObj.renderAll()
+    }
+
+    const invertedClipPathFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        let clipPath = new fabric.Circle({ radius: 15, top: 0, left: 0 });
+        clipPath.inverted = true
+        activeObject.set({
+            clipPath: clipPath
+        })
+        console.log("active object: ", activeObject);
+        canvasObj.renderAll()
+    }
+
+    let button
+    if (activeObject && activeObject.text) {
+        button = <TextProperties />
+    } else {
+        button = null
+    }
+
     return (
+
         <>
-            <div className='colorpicker'>
+            <div className='colorpicker' style={{marginBottom: "7rem"}}>
                 <div>
                     Fill
                     <Button className='button-object' onClick={() => setFillColor(!fillColor)}>Open Fill Bar</Button>
@@ -255,6 +371,9 @@ function Object() {
                         <input type='checkbox' checked={checkbox} onChange={checkBoxFunc} />
                     </div>
                 </div>
+
+                {button}
+
                 <div className='object-buttons'>
                     <Button variant="outline-primary" onClick={lockHorizontalMovFunc}>Lock Horizontal Movement</Button>
                     <Button variant="outline-primary" onClick={lockVerticalMovFunc}>Lock Vertical Movement</Button>
@@ -297,16 +416,29 @@ function Object() {
                     <input style={{ marginLeft: "10px" }} type='checkbox' checked={controlCheckBox} onChange={controlCheckBoxFunc} />
                     <div style={{ marginLeft: "15px" }}>
                         Transparent Corners
-                        <input style={{ marginLeft: "10px" }} type='checkbox' checked={transparentCornersCheckBox} onChange={transparentCornersCheckBoxFunc}/> 
+                        <input style={{ marginLeft: "10px" }} type='checkbox' checked={transparentCornersCheckBox} onChange={transparentCornersCheckBoxFunc} />
                     </div>
-                    {/* <div style={{ marginLeft: "15px" }}>
+                    <div style={{ marginLeft: "15px" }}>
                         Borders
-                        <input style={{ marginLeft: "10px" }} type='checkbox' checked={} onChange={} />
+                        <input style={{ marginLeft: "10px" }} type='checkbox' checked={removeBordersCheckBox} onChange={removeBordersFunc} />
                     </div>
                     <div style={{ marginLeft: "15px" }}>
                         Centered Rotation
-                        <input style={{ marginLeft: "10px" }} type='checkbox' checked={} onChange={} />
-                    </div> */}
+                        <input style={{ marginLeft: "10px" }} type='checkbox' checked={centeredRotation} onChange={centeredRotationFunc} />
+                    </div>
+                </div>
+                <div className='object-buttons'>
+                    <Button onClick={bringForwards}>Bring Forwards</Button>
+                    <Button onClick={bringBackwards}>Bring Backwards</Button>
+                    <Button onClick={sendToFrontFunc}>Send to Front</Button>
+                    <Button onClick={sendToBackFunc}>Send to Back</Button>
+                </div>
+                <div className='object-buttons'>
+                    <Button onClick={gradentifyFunc}>Gradentify</Button>
+                    <Button onClick={shadowifyFunc}>Shadowify</Button>
+                    <Button onClick={patternifyFunc}>Patternify</Button>
+                    <Button onClick={clipPathFunc}>Clip</Button>
+                    <Button onClick={invertedClipPathFunc}>Clip Inverted</Button>
                 </div>
             </div>
         </>
