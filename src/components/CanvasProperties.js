@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRefs } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { CanvasStore } from '../store/Context';
 import { Button } from 'react-bootstrap';
 import { SketchPicker } from 'react-color';
@@ -21,6 +21,8 @@ function CanvasProperties() {
     const [lineColor, setLineColor] = useState(1)
     const [lineColorCheck, setLineColorCheck] = useState(false)
     const [drawingMode, setDrawingMode] = useState(false)
+    const [enableHDPI, setEnableHDPI] = useState(false)
+    const [offscreenRender, setOffScreenRender] = useState(false)
 
     useEffect(() => {
         setNoOfObjects(canvasObj.getObjects().length)
@@ -84,9 +86,7 @@ function CanvasProperties() {
             canvasObj.freeDrawingBrush = new fabric.CircleBrush(canvasObj);
         } else if (brushTemp === "pencil") {
             canvasObj.freeDrawingBrush = new fabric.PencilBrush(canvasObj)
-        } else if (brushTemp === "base") {
-            canvasObj.freeDrawingBrush = new fabric.PatternBrush(canvasObj)
-        } else if (brushTemp === "spray") {
+        }  else if (brushTemp === "spray") {
             canvasObj.freeDrawingBrush = new fabric.SprayBrush(canvasObj)
         }
         canvasObj.renderAll()
@@ -117,6 +117,27 @@ function CanvasProperties() {
             affectStroke: true,
             color: 'black',
         })
+        canvasObj.renderAll()
+    }
+
+    const enableHDPIfunc = (e) => {
+        let activeObject = canvasObj.getActiveObject();
+        let enableHDPItemp = !enableHDPI;
+
+        activeObject.set({
+            left: Math.round(activeObject.left),
+            top: Math.round(activeObject.top),
+        });
+
+        setEnableHDPI(enableHDPItemp);
+        canvasObj.enableRetinaScaling = enableHDPItemp;
+        canvasObj.renderAll();
+    }
+
+    const offscreenRenderFunc = (e) => {
+        let offscreenRenderTemp = !offscreenRender
+        setOffScreenRender(offscreenRender) 
+        canvasObj.skipOffscreen = offscreenRenderTemp
         canvasObj.renderAll()
     }
 
@@ -154,7 +175,6 @@ function CanvasProperties() {
             <div>
                 Mode:
                 <select value={brush} onChange={changeBrushFunc} style={{ marginLeft: "13px", marginTop: "10px" }}>
-                    <option value="base">Pattern</option>
                     <option value="pencil">Pencil</option>
                     <option value="circle">Circle</option>
                     <option value="spray">Spray</option>
@@ -196,16 +216,37 @@ function CanvasProperties() {
                     className='custom-slider' />
             </div>
 
+            <div style={{ marginTop: "10px", display:  "flex", flexDirection: "row", alignItems: "center" }}>
+                <div>
+                    Enable HDPI Scaling
+                    <input
+                        type='checkbox'
+                        onChange={enableHDPIfunc}
+                        value={enableHDPI}
+                        style={{ marginLeft: "10px" }}
+                    />
+                </div>
+                <div style={{marginLeft: "20px"}}>
+                    Skip offscreen rendering
+                    <input
+                        type='checkbox'
+                        onChange={offscreenRenderFunc}
+                        value={offscreenRender}
+                        style={{ marginLeft: "10px" }}
+                    />
+                </div>
+            </div>
+
             <div style={{ marginTop: "10rem" }}>
                 IMAGE:
-                <img src={pngURL} />
+                <img src={pngURL} alt='pngURL' />
             </div>
 
             <div style={{ marginTop: "3rem" }}>
                 SVG:
                 {
                     svgUrl &&
-                    <img src={svgUrl} />
+                    <img src={svgUrl} alt='svgURL' />
                 }
             </div>
 

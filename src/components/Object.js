@@ -24,14 +24,13 @@ function Object() {
     const [controlCheckBox, setControlCheckBox] = useState(false)
     const [transparentCornersCheckBox, setTransparentCornersCheckBox] = useState(false)
     const [removeBordersCheckBox, setRemoveBordersCheckBox] = useState(false)
-    const [sendToBack, setSendToBack] = useState(false)
-    const [sendToFront, setSendToFront] = useState(false)
     const [centeredRotation, setCenteredRotation] = useState(false)
     const [lockHorizontalMov, setHorizontalMov] = useState(false)
     const [lockVerticalMov, setVerticalMov] = useState(false)
     const [lockHorizontalScaling, setLockHorizontalScaling] = useState(false)
     const [lockVerticalScaling, setLockVerticalScaling] = useState(false)
     const [lockRotation, setLockRotation] = useState(false)
+    const [scalePattern, setScalePattern] = useState(1.00001)
 
     const [activeObject, setActiveObject] = useState()
 
@@ -312,6 +311,42 @@ function Object() {
         canvasObj.renderAll()
     }
 
+    const patternRepeatXFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        let scaleTemp = scalePattern + 0.00001
+        setScalePattern(scaleTemp)
+        activeObject.fill.repeat = 'repeat-x'
+        activeObject.scale(scaleTemp)
+        canvasObj.renderAll()
+    }
+
+    const patternRepeatFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        let scaleTemp = scalePattern + 0.00001
+        setScalePattern(scaleTemp)
+        activeObject.scale(scaleTemp)
+        activeObject.fill.repeat = 'repeat'
+        canvasObj.renderAll()
+    }
+
+    const patternRepeatYFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        let scaleTemp = scalePattern + 0.00001
+        setScalePattern(scaleTemp)
+        activeObject.scale(scaleTemp)
+        activeObject.fill.repeat = 'repeat-y'
+        canvasObj.renderAll()
+    }
+
+    const patternNoRepeatFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
+        let scaleTemp = scalePattern + 0.00001
+        setScalePattern(scaleTemp)
+        activeObject.scale(scaleTemp)
+        activeObject.fill.repeat = 'no-repeat'
+        canvasObj.renderAll()
+    }
+
     let button
     if (activeObject && activeObject.text) {
         button = <TextProperties />
@@ -322,7 +357,7 @@ function Object() {
     return (
 
         <>
-            <div className='colorpicker' style={{marginBottom: "7rem"}}>
+            <div className='colorpicker' style={{ marginBottom: "7rem" }}>
                 <div>
                     Fill
                     <Button className='button-object' onClick={() => setFillColor(!fillColor)}>Open Fill Bar</Button>
@@ -437,6 +472,12 @@ function Object() {
                     <Button onClick={patternifyFunc}>Patternify</Button>
                     <Button onClick={clipPathFunc}>Clip</Button>
                     <Button onClick={invertedClipPathFunc}>Clip Inverted</Button>
+                </div>
+                <div className='object-buttons'>
+                    <Button onClick={patternRepeatFunc}>Pattern repeat</Button>
+                    <Button onClick={patternRepeatXFunc}>Pattern repeat-x</Button>
+                    <Button onClick={patternRepeatYFunc}>Pattern repeat-y</Button>
+                    <Button onClick={patternNoRepeatFunc}>Pattern repeat-none</Button>
                 </div>
             </div>
         </>

@@ -13,6 +13,7 @@ function Canvas() {
         const newCanvas = new fabric.Canvas(canvasRef.current, {
             width: 600,
             height: 600,
+            enableRetinaScaling: true,
         });
 
         setCanvasObj(newCanvas)
