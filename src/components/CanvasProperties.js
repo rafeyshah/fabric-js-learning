@@ -143,7 +143,7 @@ function CanvasProperties() {
 
     return (
         <div>
-            <div>
+            <div style={{ marginTop: "50px"}} >
                 Canvas complexity (number of paths): {noOfObjects}
             </div>
             <div className='object-buttons' style={{ marginTop: "10px" }}>

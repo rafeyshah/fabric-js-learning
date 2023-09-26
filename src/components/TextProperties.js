@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { CanvasStore } from '../store/Context';
 import { Button } from 'react-bootstrap';
 import { SketchPicker } from 'react-color';
@@ -23,6 +23,11 @@ function TextProperties() {
     const [overline, setOverline] = useState(false)
     const [backgroundColor, setBackgroundColor] = useState("")
     const [backgroundColorCheck, setBackgroundColorCheck] = useState(false)
+
+
+    useEffect(()=> {
+        setActiveObject(canvasObj.getActiveObject())
+    }, [canvasObj])
 
     const changeTextFunc = (e) => {
         let textBoxValueTemp = e.target.value

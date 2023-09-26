@@ -33,7 +33,7 @@
   right: 2%;
 }
 
-.right-panel > div > button,
+.right-panel > div > div > button,
 p {
   margin: 0 1rem;
 }
@@ -106,14 +106,26 @@ p {
   color: white;
 }
 
-@media (min-width: 768px) {
-  .nav-button {
-    /* padding: 12px 50px; */
-  }
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .pressed {
-  background: #0d6efd !important;
+  background: black !important;
   color: white !important;
 }
 
@@ -130,6 +142,11 @@ p {
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
+@media (min-width: 768px) {
+  .nav-button {
+    /* padding: 12px 50px; */
+  }
+}
 
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {

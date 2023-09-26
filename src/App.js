@@ -9,8 +9,8 @@ function App() {
   return (
     <div className='container'>
       <StoreContext>
-        <Canvas></Canvas>
-        <RightPanel></RightPanel>
+        <Canvas ></Canvas>
+        <RightPanel ></RightPanel>
       </StoreContext>
     </div>
   );
