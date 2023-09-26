@@ -3,6 +3,7 @@ import { CanvasStore } from '../store/Context';
 import { fabric } from 'fabric';
 function Canvas() {
     const {
+        canvasObj,
         setCanvasObj
     } = useContext(CanvasStore);
 
@@ -24,9 +25,14 @@ function Canvas() {
         };
     }, []);
 
+    const getActiveObject = (e) => {
+        console.log("Called");
+        console.log(canvasObj.getActiveObject());
+    }
+
     return (
         <>
-            <canvas id='canvas' ref={canvasRef}></canvas>
+            <canvas id='canvas' onClick={getActiveObject} ref={canvasRef}></canvas>
         </>
     )
 }

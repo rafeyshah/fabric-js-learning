@@ -16,8 +16,8 @@ function Object() {
     const [fillColor, setFillColor] = useState(false)
     const [strokeColor, setStrokeColor] = useState()
     const [strokeColorFill, setStrokeColorFill] = useState(false)
-    const [sliderValue, setSliderValue] = useState(0)
-    const [strokeWidth, setStrokeWidth] = useState(1)
+    const [sliderValue, setSliderValue] = useState(canvasObj.getActiveObject().opacity)
+    const [strokeWidth, setStrokeWidth] = useState(canvasObj.getActiveObject().strokeWidth)
     const [checkbox, setCheckBox] = useState(false)
     const [cacheCheckBox, setCacheCheckBox] = useState(false)
     const [noScaleCacheCheck, setNoScaleCacheCheck] = useState(false)
@@ -37,34 +37,40 @@ function Object() {
     useEffect(() => {
         let activeObject = canvasObj.getActiveObject()
         setActiveObject(activeObject)
+        console.log("Active Object: ",  activeObject);
         canvasObj.renderAll()
-    }, [canvasObj])
+    }, [canvasObj.getActiveObject()])
 
     const fillColorFunc = (clr) => {
+        let activeObject = canvasObj.getActiveObject()
         setColor(clr.hex);
         activeObject.set({ fill: clr.hex })
         canvasObj.renderAll()
     }
 
     const strokeColorFunc = (clr) => {
+        let activeObject = canvasObj.getActiveObject()
         setStrokeColor(clr.hex);
         activeObject.set({ stroke: clr.hex })
         canvasObj.renderAll()
     }
 
     const changeOpacity = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         setSliderValue(e.target.value)
         activeObject.opacity = e.target.value / 100
         canvasObj.renderAll()
     }
 
     const changeStrokeWidth = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         setStrokeWidth(e.target.value)
         activeObject.strokeWidth = (e.target.value / 10)
         canvasObj.renderAll()
     }
 
     const checkBoxFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         let checkboxTemp = !checkbox
         setCheckBox(checkboxTemp)
         if (checkboxTemp === true) {
@@ -77,6 +83,7 @@ function Object() {
     }
 
     const lockHorizontalMovFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         let horizontalMovTemp = !lockHorizontalMov
         setHorizontalMov(horizontalMovTemp)
         if (activeObject.group && activeObject.group.lockMovementX && activeObject.group.lockMovementX === true) {
@@ -96,6 +103,7 @@ function Object() {
     }
 
     const lockVerticalMovFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         let verticalMovTemp = !lockVerticalMov
         setVerticalMov(verticalMovTemp)
         if (activeObject.group && activeObject.group.lockMovementY && activeObject.group.lockMovementY === true) {
@@ -115,6 +123,7 @@ function Object() {
     }
 
     const lockHorizontalScalingFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         let lockHorizontalScalingTemp = !lockHorizontalScaling
         setLockHorizontalScaling(lockHorizontalScalingTemp)
         if (activeObject.group && activeObject.group.lockScalingX && activeObject.group.lockScalingX === true) {
@@ -134,6 +143,7 @@ function Object() {
     }
 
     const lockVerticalScalingFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         let lockVerticalScalingTemp = !lockVerticalScaling
         setLockVerticalScaling(lockVerticalScalingTemp)
         if (activeObject.group && activeObject.group.lockScalingY && activeObject.group.lockScalingY === true) {
@@ -153,6 +163,7 @@ function Object() {
     }
 
     const lockRotationFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         let lockRotationTemp = !lockRotation
         setLockRotation(lockRotationTemp)
         if (activeObject.group && activeObject.group.lockRotation && activeObject.group.lockRotation === true) {
@@ -216,6 +227,7 @@ function Object() {
     }
 
     const removeBordersFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         let checkBoxTemp = !removeBordersCheckBox
         setRemoveBordersCheckBox(checkBoxTemp)
         activeObject.hasBorders = checkBoxTemp
@@ -223,6 +235,7 @@ function Object() {
     }
 
     const centeredRotationFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         let checkBoxTemp = !centeredRotation
         setCenteredRotation(checkBoxTemp)
         activeObject.centeredRotation = checkBoxTemp
