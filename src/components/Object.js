@@ -359,7 +359,7 @@ function Object() {
         <>
             <div style={{marginTop: "50px", marginLeft: "1rem"}} className='panel-item'>
                 Fill
-                <Button className='button-object' onClick={() => setFillColor(!fillColor)}>Open Fill Bar</Button>
+                <Button className='button-object' variant='outline-dark' onClick={() => setFillColor(!fillColor)}>Open Fill Bar</Button>
                 {
                     fillColor && <SketchPicker
                         color={color}
@@ -369,7 +369,7 @@ function Object() {
             </div>
             <div style={{marginLeft: "1rem"}} className='panel-item'>
                 Stroke
-                <Button className='button-object' onClick={() => setStrokeColorFill(!strokeColorFill)}>Open Stroke Bar</Button>
+                <Button className='button-object' variant='outline-dark' onClick={() => setStrokeColorFill(!strokeColorFill)}>Open Stroke Bar</Button>
                 {
                     strokeColorFill && <SketchPicker
                         color={strokeColor}
@@ -407,13 +407,13 @@ function Object() {
             {button}
 
             <div className='object-buttons panel-item'>
-                <Button variant="outline-primary" onClick={lockHorizontalMovFunc}>Lock Horizontal Movement</Button>
-                <Button variant="outline-primary" onClick={lockVerticalMovFunc}>Lock Vertical Movement</Button>
-                <Button variant="outline-primary" onClick={lockHorizontalScalingFunc}>Lock Horizontal Scaling</Button>
+                <Button variant="outline-dark" onClick={lockHorizontalMovFunc}>Lock Horizontal Movement</Button>
+                <Button variant="outline-dark" onClick={lockVerticalMovFunc}>Lock Vertical Movement</Button>
+                <Button variant="outline-dark" onClick={lockHorizontalScalingFunc}>Lock Horizontal Scaling</Button>
             </div>
             <div className='object-buttons panel-item'>
-                <Button variant="outline-primary" onClick={lockVerticalScalingFunc}>Lock Vertical Scaling</Button>
-                <Button variant="outline-primary" onClick={lockRotationFunc}>Lock Rotation</Button>
+                <Button variant="outline-dark" onClick={lockVerticalScalingFunc}>Lock Vertical Scaling</Button>
+                <Button variant="outline-dark" onClick={lockRotationFunc}>Lock Rotation</Button>
             </div>
             <div style={{marginLeft: "1rem"}} className='originX panel-item' onChange={onChangeX}>
                 Origin X:
@@ -460,23 +460,23 @@ function Object() {
                 </div>
             </div>
             <div className='object-buttons panel-item'>
-                <Button onClick={bringForwards}>Bring Forwards</Button>
-                <Button onClick={bringBackwards}>Bring Backwards</Button>
-                <Button onClick={sendToFrontFunc}>Send to Front</Button>
-                <Button onClick={sendToBackFunc}>Send to Back</Button>
+                <Button variant='outline-dark' onClick={bringForwards}>Bring Forwards</Button>
+                <Button variant='outline-dark' onClick={bringBackwards}>Bring Backwards</Button>
+                <Button variant='outline-dark' onClick={sendToFrontFunc}>Send to Front</Button>
+                <Button variant='outline-dark' onClick={sendToBackFunc}>Send to Back</Button>
             </div>
             <div className='object-buttons panel-item'>
-                <Button onClick={gradentifyFunc}>Gradentify</Button>
-                <Button onClick={shadowifyFunc}>Shadowify</Button>
-                <Button onClick={patternifyFunc}>Patternify</Button>
-                <Button onClick={clipPathFunc}>Clip</Button>
-                <Button onClick={invertedClipPathFunc}>Clip Inverted</Button>
+                <Button variant='outline-dark' onClick={gradentifyFunc}>Gradentify</Button>
+                <Button variant='outline-dark' onClick={shadowifyFunc}>Shadowify</Button>
+                <Button variant='outline-dark' onClick={patternifyFunc}>Patternify</Button>
+                <Button variant='outline-dark' onClick={clipPathFunc}>Clip</Button>
+                <Button variant='outline-dark' onClick={invertedClipPathFunc}>Clip Inverted</Button>
             </div>
             <div className='object-buttons panel-item'>
-                <Button onClick={patternRepeatFunc}>Pattern repeat</Button>
-                <Button onClick={patternRepeatXFunc}>Pattern repeat-x</Button>
-                <Button onClick={patternRepeatYFunc}>Pattern repeat-y</Button>
-                <Button onClick={patternNoRepeatFunc}>Pattern repeat-none</Button>
+                <Button variant='outline-dark' onClick={patternRepeatFunc}>Pattern repeat</Button>
+                <Button variant='outline-dark' onClick={patternRepeatXFunc}>Pattern repeat-x</Button>
+                <Button variant='outline-dark' onClick={patternRepeatYFunc}>Pattern repeat-y</Button>
+                <Button variant='outline-dark' onClick={patternNoRepeatFunc}>Pattern repeat-none</Button>
             </div>
         </>
     )

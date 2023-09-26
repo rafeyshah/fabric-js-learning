@@ -187,7 +187,7 @@ function TextProperties() {
             </div>
             <div style={{ marginLeft: "13px", marginTop: "15px" }}>
                 Background Color:
-                <Button className='button-object' onClick={() => setBackgroundColorCheck(!backgroundColorCheck)}>Open Fill Bar</Button>
+                <Button variant='outline-dark' className='button-object' onClick={() => setBackgroundColorCheck(!backgroundColorCheck)}>Open Fill Bar</Button>
                 {
                     backgroundColorCheck && <SketchPicker
                         color={backgroundColor}
@@ -229,11 +229,11 @@ function TextProperties() {
                     className='custom-slider' />
             </div>
             <div style={{ marginTop: "15px" }} className='button-object'>
-                <Button variant="outline-primary" onClick={changeBoldFunc}>Bold</Button>
-                <Button style={{ marginLeft: "5px" }} onClick={changeItalicFunc} variant="outline-primary">Italic</Button>
-                <Button style={{ marginLeft: "5px" }} onClick={underlineTextFunc} variant="outline-primary">Underline</Button>
-                <Button style={{ marginLeft: "5px" }} onClick={linethroughFunc} variant="outline-primary">Linethrough</Button>
-                <Button style={{ marginLeft: "5px" }} onClick={overlineFunc} variant="outline-primary">Overline</Button>
+                <Button variant="outline-secondary" onClick={changeBoldFunc}>Bold</Button>
+                <Button style={{ marginLeft: "5px" }} onClick={changeItalicFunc} variant="outline-secondary">Italic</Button>
+                <Button style={{ marginLeft: "5px" }} onClick={underlineTextFunc} variant="outline-secondary">Underline</Button>
+                <Button style={{ marginLeft: "5px" }} onClick={linethroughFunc} variant="outline-secondary">Linethrough</Button>
+                <Button style={{ marginLeft: "5px" }} onClick={overlineFunc} variant="outline-secondary">Overline</Button>
             </div>
         </div>
     )

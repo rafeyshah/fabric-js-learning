@@ -14,13 +14,13 @@ function RightPanel() {
             <Nav
                 onSelect={(selectedKey) => setMenuPanel(selectedKey)}
             >
-                <Nav.Item>
+                <Nav.Item className="nav-button" >
                     <Nav.Link eventKey="simple">Simple</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                <Nav.Item className="nav-button" style={{marginLeft: "15px"}}>
                     <Nav.Link eventKey="object">Object Properties</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
+                <Nav.Item className="nav-button" style={{marginLeft: "25px"}}>
                     <Nav.Link eventKey="canvas">Canvas</Nav.Link>
                 </Nav.Item>
             </Nav>

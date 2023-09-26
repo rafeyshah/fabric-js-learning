@@ -148,18 +148,18 @@ function CanvasProperties() {
             </div>
             <div className='object-buttons' style={{ marginTop: "10px" }}>
                 Rasterize canvas to
-                <Button onClick={imageToCanvasFunc}>Image</Button>
-                <Button onClick={imagetoCanvas3x}>Image 3X Multiplied</Button>
-                <Button onClick={canvasToSvg}>SVG</Button>
-                <Button onClick={canvasToJson}>JSON</Button>
+                <Button variant='outline-dark' onClick={imageToCanvasFunc}>Image</Button>
+                <Button variant='outline-dark' onClick={imagetoCanvas3x}>Image 3X Multiplied</Button>
+                <Button variant='outline-dark' onClick={canvasToSvg}>SVG</Button>
+                <Button variant='outline-dark' onClick={canvasToJson}>JSON</Button>
             </div>
             <div className='object-buttons' style={{ marginTop: "10px" }}>
-                <Button onClick={clearCanvas} variant='danger'>Clear Canvas</Button>
-                <Button onClick={clearSelectedGroup} >Remove Selected Group</Button>
+                <Button onClick={clearCanvas} variant='outline-danger'>Clear Canvas</Button>
+                <Button onClick={clearSelectedGroup} variant='outline-danger' >Remove Selected Group</Button>
             </div>
             <div className='object-buttons' style={{ marginTop: "10px" }}>
                 Canvas background
-                <Button className='button-object' onClick={() => setBackgroundColorCheck(!backgroundColorCheck)}>Open Background Color Bar</Button>
+                <Button variant='outline-dark' className='button-object' onClick={() => setBackgroundColorCheck(!backgroundColorCheck)}>Open Background Color Bar</Button>
                 {
                     backgroundColorCheck && <SketchPicker
                         color={backgroundColor}
@@ -169,7 +169,7 @@ function CanvasProperties() {
             </div>
 
             <div style={{ marginTop: "10px" }}>
-                <Button variant='outline-primary' onClick={enterDrawingMode}>Enter Free Drawing</Button>
+                <Button variant='outline-dark' onClick={enterDrawingMode}>Enter Free Drawing</Button>
             </div>
 
             <div>
@@ -195,7 +195,7 @@ function CanvasProperties() {
 
             <div style={{ marginTop: "10px" }}>
                 Line Color:
-                <Button className='button-object' onClick={() => setLineColorCheck(!lineColorCheck)}>Open Stroke Bar</Button>
+                <Button variant='outline-dark' className='button-object' onClick={() => setLineColorCheck(!lineColorCheck)}>Open Stroke Bar</Button>
                 {
                     lineColorCheck && <SketchPicker
                         color={lineColor}

@@ -431,38 +431,38 @@ function Simple() {
     return (
         <>
             <div style={{marginTop: "50px"}} className='panel-item'>
-                <Button onClick={addSquare}>Add Square</Button>
-                <Button onClick={addRectangle}>Add Rectangle</Button>
-                <Button onClick={addCircle}>Add Circle</Button>
-                <Button onClick={addTriangle}>Add Triangle</Button>
-                <Button onClick={addPolygon}>Add Polygon</Button>
+                <Button variant="outline-dark" onClick={addSquare}>Add Square</Button>
+                <Button variant="outline-dark" onClick={addRectangle}>Add Rectangle</Button>
+                <Button variant="outline-dark" onClick={addCircle}>Add Circle</Button>
+                <Button variant="outline-dark" onClick={addTriangle}>Add Triangle</Button>
+                <Button variant="outline-dark" onClick={addPolygon}>Add Polygon</Button>
             </div>
             <div className='panel-item'> 
-                <Button onClick={line}>Add Line</Button>
-                <Button onClick={addText}>Text</Button>
-                <Button onClick={editableText}>Edit Text</Button>
-                <Button onClick={addPattern}>Pattern</Button>
+                <Button variant="outline-dark" onClick={line}>Add Line</Button>
+                <Button variant="outline-dark" onClick={addText}>Text</Button>
+                <Button variant="outline-dark" onClick={editableText}>Edit Text</Button>
+                <Button variant="outline-dark" onClick={addPattern}>Pattern</Button>
             </div>
             <div className='panel-item'>
-                <Button onClick={addImage}>Image (simple)</Button>
-                <Button onClick={addImageFromUrl}>Image (URL)</Button>
+                <Button variant="outline-dark" onClick={addImage}>Image (simple)</Button>
+                <Button variant="outline-dark" onClick={addImageFromUrl}>Image (URL)</Button>
             </div>
             <div className='panel-item'>
-                <Button onClick={firstGradient}>First Gradient</Button>
-                <Button onClick={secondGradient}>Second Gradient</Button>
-                <Button onClick={thirdGradient}>Third Gradient</Button>
+                <Button variant="outline-dark" onClick={firstGradient}>First Gradient</Button>
+                <Button variant="outline-dark" onClick={secondGradient}>Second Gradient</Button>
+                <Button variant="outline-dark" onClick={thirdGradient}>Third Gradient</Button>
             </div>
             <div className='panel-item'>
-                <Button onClick={arcOne}>Arc 1</Button>
-                <Button onClick={arcTwo}>Arc 2</Button>
-                <Button onClick={arcThree}>Arc 3</Button>
-                <Button onClick={arcFour}>Arc 4</Button>
+                <Button variant="outline-dark" onClick={arcOne}>Arc 1</Button>
+                <Button variant="outline-dark" onClick={arcTwo}>Arc 2</Button>
+                <Button variant="outline-dark" onClick={arcThree}>Arc 3</Button>
+                <Button variant="outline-dark" onClick={arcFour}>Arc 4</Button>
             </div>
             <div className='panel-item'>
-                <Button onClick={svgPathOne}>SVG Path 1</Button>
-                <Button onClick={svgPathTwo}>SVG Path 2</Button>
-                <Button onClick={svgPathThree}>SVG Path 3</Button>
-                <Button onClick={svgPathFour}>SVG Path 4</Button>
+                <Button variant="outline-dark" onClick={svgPathOne}>SVG Path 1</Button>
+                <Button variant="outline-dark" onClick={svgPathTwo}>SVG Path 2</Button>
+                <Button variant="outline-dark" onClick={svgPathThree}>SVG Path 3</Button>
+                <Button variant="outline-dark" onClick={svgPathFour}>SVG Path 4</Button>
             </div>
         </>
     )
