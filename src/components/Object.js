@@ -357,128 +357,126 @@ function Object() {
     return (
 
         <>
-            <div className='colorpicker' style={{ marginBottom: "7rem" }}>
-                <div>
-                    Fill
-                    <Button className='button-object' onClick={() => setFillColor(!fillColor)}>Open Fill Bar</Button>
-                    {
-                        fillColor && <SketchPicker
-                            color={color}
-                            onChangeComplete={fillColorFunc}
-                        />
-                    }
+            <div style={{marginTop: "50px", marginLeft: "1rem"}} className='panel-item'>
+                Fill
+                <Button className='button-object' onClick={() => setFillColor(!fillColor)}>Open Fill Bar</Button>
+                {
+                    fillColor && <SketchPicker
+                        color={color}
+                        onChangeComplete={fillColorFunc}
+                    />
+                }
+            </div>
+            <div style={{marginLeft: "1rem"}} className='panel-item'>
+                Stroke
+                <Button className='button-object' onClick={() => setStrokeColorFill(!strokeColorFill)}>Open Stroke Bar</Button>
+                {
+                    strokeColorFill && <SketchPicker
+                        color={strokeColor}
+                        onChangeComplete={strokeColorFunc}
+                    />
+                }
+            </div>
+            <div style={{marginLeft: "1rem"}} className='panel-item'>
+                Opacity
+                <input
+                    type='range'
+                    onChange={changeOpacity}
+                    min={1}
+                    max={100}
+                    step={1}
+                    value={sliderValue}
+                    className='custom-slider' />
+            </div>
+            <div style={{marginLeft: "1rem"}} className='panel-item'>
+                Stroke Width
+                <input
+                    type='range'
+                    onChange={changeStrokeWidth}
+                    min={1}
+                    max={100}
+                    step={1}
+                    value={strokeWidth}
+                    className='custom-slider' />
+                <div style={{ marginLeft: "5px" }}>
+                    Stroke Uniform
+                    <input type='checkbox' checked={checkbox} onChange={checkBoxFunc} />
                 </div>
-                <div>
-                    Stroke
-                    <Button className='button-object' onClick={() => setStrokeColorFill(!strokeColorFill)}>Open Stroke Bar</Button>
-                    {
-                        strokeColorFill && <SketchPicker
-                            color={strokeColor}
-                            onChangeComplete={strokeColorFunc}
-                        />
-                    }
-                </div>
-                <div>
-                    Opacity
-                    <input
-                        type='range'
-                        onChange={changeOpacity}
-                        min={1}
-                        max={100}
-                        step={1}
-                        value={sliderValue}
-                        className='custom-slider' />
-                </div>
-                <div>
-                    Stroke Width
-                    <input
-                        type='range'
-                        onChange={changeStrokeWidth}
-                        min={1}
-                        max={100}
-                        step={1}
-                        value={strokeWidth}
-                        className='custom-slider' />
-                    <div style={{ marginLeft: "5px" }}>
-                        Stroke Uniform
-                        <input type='checkbox' checked={checkbox} onChange={checkBoxFunc} />
-                    </div>
-                </div>
+            </div>
 
-                {button}
+            {button}
 
-                <div className='object-buttons'>
-                    <Button variant="outline-primary" onClick={lockHorizontalMovFunc}>Lock Horizontal Movement</Button>
-                    <Button variant="outline-primary" onClick={lockVerticalMovFunc}>Lock Vertical Movement</Button>
-                    <Button variant="outline-primary" onClick={lockHorizontalScalingFunc}>Lock Horizontal Scaling</Button>
+            <div className='object-buttons panel-item'>
+                <Button variant="outline-primary" onClick={lockHorizontalMovFunc}>Lock Horizontal Movement</Button>
+                <Button variant="outline-primary" onClick={lockVerticalMovFunc}>Lock Vertical Movement</Button>
+                <Button variant="outline-primary" onClick={lockHorizontalScalingFunc}>Lock Horizontal Scaling</Button>
+            </div>
+            <div className='object-buttons panel-item'>
+                <Button variant="outline-primary" onClick={lockVerticalScalingFunc}>Lock Vertical Scaling</Button>
+                <Button variant="outline-primary" onClick={lockRotationFunc}>Lock Rotation</Button>
+            </div>
+            <div style={{marginLeft: "1rem"}} className='originX panel-item' onChange={onChangeX}>
+                Origin X:
+                <input type="radio" value="left" name="originX" /> Left
+                <input type="radio" value="center" name="originX" /> Center
+                <input type="radio" value="right" name="originX" /> Right
+                <input type="radio" value="0.3" name="originX" /> 0.3
+                <input type="radio" value="0.5" name="originX" /> 0.5
+                <input type="radio" value="0.7" name="originX" /> 0.7
+                <input type="radio" value="1" name="originX" /> 1
+            </div>
+            <div style={{marginLeft: "1rem"}} className='originY panel-item' onChange={onChangeY}>
+                Origin Y:
+                <input type="radio" value="top" name="originY" /> Top
+                <input type="radio" value="center" name="originY" /> Center
+                <input type="radio" value="bottom" name="originY" /> Bottom
+                <input type="radio" value="0.3" name="originY" /> 0.3
+                <input type="radio" value="0.5" name="originY" /> 0.5
+                <input type="radio" value="0.7" name="originY" /> 0.7
+                <input type="radio" value="1" name="originY" /> 1
+            </div>
+            <div style={{marginLeft: "1rem"}} className='object-buttons panel-item'>
+                Cache:
+                <input style={{ marginLeft: "10px" }} type='checkbox' checked={cacheCheckBox} onChange={cacheCheckBoxFunc} />
+                <div style={{ marginLeft: "15px" }}>
+                    No Scale Cache
+                    <input style={{ marginLeft: "10px" }} type='checkbox' checked={noScaleCacheCheck} onChange={noScaleCacheCheckFunc} />
                 </div>
-                <div className='object-buttons'>
-                    <Button variant="outline-primary" onClick={lockVerticalScalingFunc}>Lock Vertical Scaling</Button>
-                    <Button variant="outline-primary" onClick={lockRotationFunc}>Lock Rotation</Button>
+            </div>
+            <div style={{marginLeft: "1rem"}} className='object-buttons panel-item'>
+                Controls:
+                <input style={{ marginLeft: "10px" }} type='checkbox' checked={controlCheckBox} onChange={controlCheckBoxFunc} />
+                <div style={{ marginLeft: "15px" }}>
+                    Transparent Corners
+                    <input style={{ marginLeft: "10px" }} type='checkbox' checked={transparentCornersCheckBox} onChange={transparentCornersCheckBoxFunc} />
                 </div>
-                <div className='originX' onChange={onChangeX}>
-                    Origin X:
-                    <input type="radio" value="left" name="originX" /> Left
-                    <input type="radio" value="center" name="originX" /> Center
-                    <input type="radio" value="right" name="originX" /> Right
-                    <input type="radio" value="0.3" name="originX" /> 0.3
-                    <input type="radio" value="0.5" name="originX" /> 0.5
-                    <input type="radio" value="0.7" name="originX" /> 0.7
-                    <input type="radio" value="1" name="originX" /> 1
+                <div style={{ marginLeft: "15px" }}>
+                    Borders
+                    <input style={{ marginLeft: "10px" }} type='checkbox' checked={removeBordersCheckBox} onChange={removeBordersFunc} />
                 </div>
-                <div className='originY' onChange={onChangeY}>
-                    Origin Y:
-                    <input type="radio" value="top" name="originY" /> Top
-                    <input type="radio" value="center" name="originY" /> Center
-                    <input type="radio" value="bottom" name="originY" /> Bottom
-                    <input type="radio" value="0.3" name="originY" /> 0.3
-                    <input type="radio" value="0.5" name="originY" /> 0.5
-                    <input type="radio" value="0.7" name="originY" /> 0.7
-                    <input type="radio" value="1" name="originY" /> 1
+                <div style={{ marginLeft: "15px" }}>
+                    Centered Rotation
+                    <input style={{ marginLeft: "10px" }} type='checkbox' checked={centeredRotation} onChange={centeredRotationFunc} />
                 </div>
-                <div className='object-buttons'>
-                    Cache:
-                    <input style={{ marginLeft: "10px" }} type='checkbox' checked={cacheCheckBox} onChange={cacheCheckBoxFunc} />
-                    <div style={{ marginLeft: "15px" }}>
-                        No Scale Cache
-                        <input style={{ marginLeft: "10px" }} type='checkbox' checked={noScaleCacheCheck} onChange={noScaleCacheCheckFunc} />
-                    </div>
-                </div>
-                <div className='object-buttons'>
-                    Controls:
-                    <input style={{ marginLeft: "10px" }} type='checkbox' checked={controlCheckBox} onChange={controlCheckBoxFunc} />
-                    <div style={{ marginLeft: "15px" }}>
-                        Transparent Corners
-                        <input style={{ marginLeft: "10px" }} type='checkbox' checked={transparentCornersCheckBox} onChange={transparentCornersCheckBoxFunc} />
-                    </div>
-                    <div style={{ marginLeft: "15px" }}>
-                        Borders
-                        <input style={{ marginLeft: "10px" }} type='checkbox' checked={removeBordersCheckBox} onChange={removeBordersFunc} />
-                    </div>
-                    <div style={{ marginLeft: "15px" }}>
-                        Centered Rotation
-                        <input style={{ marginLeft: "10px" }} type='checkbox' checked={centeredRotation} onChange={centeredRotationFunc} />
-                    </div>
-                </div>
-                <div className='object-buttons'>
-                    <Button onClick={bringForwards}>Bring Forwards</Button>
-                    <Button onClick={bringBackwards}>Bring Backwards</Button>
-                    <Button onClick={sendToFrontFunc}>Send to Front</Button>
-                    <Button onClick={sendToBackFunc}>Send to Back</Button>
-                </div>
-                <div className='object-buttons'>
-                    <Button onClick={gradentifyFunc}>Gradentify</Button>
-                    <Button onClick={shadowifyFunc}>Shadowify</Button>
-                    <Button onClick={patternifyFunc}>Patternify</Button>
-                    <Button onClick={clipPathFunc}>Clip</Button>
-                    <Button onClick={invertedClipPathFunc}>Clip Inverted</Button>
-                </div>
-                <div className='object-buttons'>
-                    <Button onClick={patternRepeatFunc}>Pattern repeat</Button>
-                    <Button onClick={patternRepeatXFunc}>Pattern repeat-x</Button>
-                    <Button onClick={patternRepeatYFunc}>Pattern repeat-y</Button>
-                    <Button onClick={patternNoRepeatFunc}>Pattern repeat-none</Button>
-                </div>
+            </div>
+            <div className='object-buttons panel-item'>
+                <Button onClick={bringForwards}>Bring Forwards</Button>
+                <Button onClick={bringBackwards}>Bring Backwards</Button>
+                <Button onClick={sendToFrontFunc}>Send to Front</Button>
+                <Button onClick={sendToBackFunc}>Send to Back</Button>
+            </div>
+            <div className='object-buttons panel-item'>
+                <Button onClick={gradentifyFunc}>Gradentify</Button>
+                <Button onClick={shadowifyFunc}>Shadowify</Button>
+                <Button onClick={patternifyFunc}>Patternify</Button>
+                <Button onClick={clipPathFunc}>Clip</Button>
+                <Button onClick={invertedClipPathFunc}>Clip Inverted</Button>
+            </div>
+            <div className='object-buttons panel-item'>
+                <Button onClick={patternRepeatFunc}>Pattern repeat</Button>
+                <Button onClick={patternRepeatXFunc}>Pattern repeat-x</Button>
+                <Button onClick={patternRepeatYFunc}>Pattern repeat-y</Button>
+                <Button onClick={patternNoRepeatFunc}>Pattern repeat-none</Button>
             </div>
         </>
     )
