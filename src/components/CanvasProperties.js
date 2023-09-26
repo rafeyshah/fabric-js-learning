@@ -86,7 +86,7 @@ function CanvasProperties() {
             canvasObj.freeDrawingBrush = new fabric.CircleBrush(canvasObj);
         } else if (brushTemp === "pencil") {
             canvasObj.freeDrawingBrush = new fabric.PencilBrush(canvasObj)
-        }  else if (brushTemp === "spray") {
+        } else if (brushTemp === "spray") {
             canvasObj.freeDrawingBrush = new fabric.SprayBrush(canvasObj)
         }
         canvasObj.renderAll()
@@ -136,7 +136,7 @@ function CanvasProperties() {
 
     const offscreenRenderFunc = (e) => {
         let offscreenRenderTemp = !offscreenRender
-        setOffScreenRender(offscreenRender) 
+        setOffScreenRender(offscreenRender)
         canvasObj.skipOffscreen = offscreenRenderTemp
         canvasObj.renderAll()
     }
@@ -181,7 +181,7 @@ function CanvasProperties() {
                 </select>
             </div>
 
-            <div style={{ marginTop: "10px" }}>
+            <div style={{ marginTop: "10px", display: 'flex', alignItems: 'center' }} >
                 Line Width:
                 <input
                     type='range'
@@ -204,7 +204,7 @@ function CanvasProperties() {
                 }
             </div>
 
-            <div style={{ marginTop: "10px" }}>
+            <div style={{ marginTop: "10px", display: 'flex', alignItems: 'center' }}>
                 Line Shadow Width:
                 <input
                     type='range'
@@ -216,7 +216,7 @@ function CanvasProperties() {
                     className='custom-slider' />
             </div>
 
-            <div style={{ marginTop: "10px", display:  "flex", flexDirection: "row", alignItems: "center" }}>
+            <div style={{ marginTop: "10px", display: "flex", flexDirection: "row", alignItems: "center" }}>
                 <div>
                     Enable HDPI Scaling
                     <input
@@ -226,7 +226,7 @@ function CanvasProperties() {
                         style={{ marginLeft: "10px" }}
                     />
                 </div>
-                <div style={{marginLeft: "20px"}}>
+                <div style={{ marginLeft: "20px" }}>
                     Skip offscreen rendering
                     <input
                         type='checkbox'

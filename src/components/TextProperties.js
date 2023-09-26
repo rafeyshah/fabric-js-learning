@@ -195,7 +195,7 @@ function TextProperties() {
                     />
                 }
             </div>
-            <div style={{ marginLeft: "13px", marginTop: "15px" }}>
+            <div style={{ marginLeft: "13px", marginTop: "15px", display: 'flex', alignItems: 'center' }}>
                 Font Size:
                 <input
                     type='range'
@@ -206,7 +206,7 @@ function TextProperties() {
                     value={fontSize}
                     className='custom-slider' />
             </div>
-            <div style={{ marginLeft: "13px", marginTop: "15px" }}>
+            <div style={{ marginLeft: "13px", marginTop: "15px", display: 'flex', alignItems: 'center' }}>
                 Line Height:
                 <input
                     type='range'
@@ -217,7 +217,7 @@ function TextProperties() {
                     value={lineHeight}
                     className='custom-slider' />
             </div>
-            <div style={{ marginLeft: "13px", marginTop: "15px" }}>
+            <div style={{ marginLeft: "13px", marginTop: "15px", display: 'flex', alignItems: 'center' }}>
                 Char Spacing:
                 <input
                     type='range'

@@ -357,7 +357,7 @@ function Object() {
     return (
 
         <>
-            <div style={{marginTop: "50px", marginLeft: "1rem"}} className='panel-item'>
+            <div style={{ marginTop: "50px", marginLeft: "1rem" }} className='panel-item'>
                 Fill
                 <Button className='button-object' variant='outline-dark' onClick={() => setFillColor(!fillColor)}>Open Fill Bar</Button>
                 {
@@ -367,7 +367,7 @@ function Object() {
                     />
                 }
             </div>
-            <div style={{marginLeft: "1rem"}} className='panel-item'>
+            <div style={{ marginLeft: "1rem" }} className='panel-item'>
                 Stroke
                 <Button className='button-object' variant='outline-dark' onClick={() => setStrokeColorFill(!strokeColorFill)}>Open Stroke Bar</Button>
                 {
@@ -377,7 +377,7 @@ function Object() {
                     />
                 }
             </div>
-            <div style={{marginLeft: "1rem"}} className='panel-item'>
+            <div style={{ marginLeft: "1rem", display: 'flex', alignItems: 'center' }} className='panel-item'>
                 Opacity
                 <input
                     type='range'
@@ -388,16 +388,17 @@ function Object() {
                     value={sliderValue}
                     className='custom-slider' />
             </div>
-            <div style={{marginLeft: "1rem"}} className='panel-item'>
+            <div style={{ marginLeft: "1rem", display: 'flex', alignItems: 'center' }} className='panel-item'>
                 Stroke Width
                 <input
+                    style={{ marginLeft: "5px" }}
                     type='range'
                     onChange={changeStrokeWidth}
                     min={1}
                     max={100}
                     step={1}
                     value={strokeWidth}
-                    className='custom-slider' />
+                    id='custom-slider' />
                 <div style={{ marginLeft: "5px" }}>
                     Stroke Uniform
                     <input type='checkbox' checked={checkbox} onChange={checkBoxFunc} />
@@ -415,7 +416,7 @@ function Object() {
                 <Button variant="outline-dark" onClick={lockVerticalScalingFunc}>Lock Vertical Scaling</Button>
                 <Button variant="outline-dark" onClick={lockRotationFunc}>Lock Rotation</Button>
             </div>
-            <div style={{marginLeft: "1rem"}} className='originX panel-item' onChange={onChangeX}>
+            <div style={{ marginLeft: "1rem" }} className='originX panel-item' onChange={onChangeX}>
                 Origin X:
                 <input type="radio" value="left" name="originX" /> Left
                 <input type="radio" value="center" name="originX" /> Center
@@ -425,7 +426,7 @@ function Object() {
                 <input type="radio" value="0.7" name="originX" /> 0.7
                 <input type="radio" value="1" name="originX" /> 1
             </div>
-            <div style={{marginLeft: "1rem"}} className='originY panel-item' onChange={onChangeY}>
+            <div style={{ marginLeft: "1rem" }} className='originY panel-item' onChange={onChangeY}>
                 Origin Y:
                 <input type="radio" value="top" name="originY" /> Top
                 <input type="radio" value="center" name="originY" /> Center
@@ -435,7 +436,7 @@ function Object() {
                 <input type="radio" value="0.7" name="originY" /> 0.7
                 <input type="radio" value="1" name="originY" /> 1
             </div>
-            <div style={{marginLeft: "1rem"}} className='object-buttons panel-item'>
+            <div style={{ marginLeft: "1rem" }} className='object-buttons panel-item'>
                 Cache:
                 <input style={{ marginLeft: "10px" }} type='checkbox' checked={cacheCheckBox} onChange={cacheCheckBoxFunc} />
                 <div style={{ marginLeft: "15px" }}>
@@ -443,7 +444,7 @@ function Object() {
                     <input style={{ marginLeft: "10px" }} type='checkbox' checked={noScaleCacheCheck} onChange={noScaleCacheCheckFunc} />
                 </div>
             </div>
-            <div style={{marginLeft: "1rem"}} className='object-buttons panel-item'>
+            <div style={{ marginLeft: "1rem" }} className='object-buttons panel-item'>
                 Controls:
                 <input style={{ marginLeft: "10px" }} type='checkbox' checked={controlCheckBox} onChange={controlCheckBoxFunc} />
                 <div style={{ marginLeft: "15px" }}>

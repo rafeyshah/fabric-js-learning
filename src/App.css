@@ -129,3 +129,28 @@ p {
   /* margin: 20px 20px; */
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
+
+
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  input[type='range'] {
+    /* overflow: hidden; */
+    width: 80px;
+    height: 5px !important;
+    -webkit-appearance: none;
+    border-radius: 3px;
+    background: white;
+    background-color: rgb(192, 192, 192);
+  } 
+
+  input[type='range']::-webkit-slider-thumb {
+    width: 15px;
+    -webkit-appearance: none;
+    height: 15px;
+    border-radius: 100%;
+    cursor: ew-resize;
+    background: white;
+    border: 2px solid black;
+  }
+
+}
