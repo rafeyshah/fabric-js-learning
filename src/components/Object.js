@@ -16,8 +16,8 @@ function Object() {
     const [fillColor, setFillColor] = useState(false)
     const [strokeColor, setStrokeColor] = useState()
     const [strokeColorFill, setStrokeColorFill] = useState(false)
-    const [sliderValue, setSliderValue] = useState(canvasObj.getActiveObject().opacity)
-    const [strokeWidth, setStrokeWidth] = useState(canvasObj.getActiveObject().strokeWidth)
+    const [sliderValue, setSliderValue] = useState(1)
+    const [strokeWidth, setStrokeWidth] = useState(1)
     const [checkbox, setCheckBox] = useState(false)
     const [cacheCheckBox, setCacheCheckBox] = useState(false)
     const [noScaleCacheCheck, setNoScaleCacheCheck] = useState(false)
@@ -31,15 +31,43 @@ function Object() {
     const [lockVerticalScaling, setLockVerticalScaling] = useState(false)
     const [lockRotation, setLockRotation] = useState(false)
     const [scalePattern, setScalePattern] = useState(1.00001)
+    const [originXValue, setOriginXValue] = useState()
+    const [originYValue, setOriginYValue] = useState()
 
     const [activeObject, setActiveObject] = useState()
 
+    const handleMouseDown = (event) => {
+        const activeObject = canvasObj.getActiveObject();
+        if (activeObject) {
+            setActiveObject(activeObject)
+            setSliderValue(activeObject.opacity * 100)
+            setStrokeWidth(activeObject.strokeWidth * 10)
+            setColor(activeObject.fill)
+            // setStrokeColor(activeObject?.stroke)
+            setCheckBox(activeObject.strokeUniform)
+            setCacheCheckBox(activeObject.objectCaching)
+            setNoScaleCacheCheck(activeObject.noScaleCache)
+            setControlCheckBox(activeObject.hasControls)
+            setTransparentCornersCheckBox(activeObject.transparentCorners)
+            setRemoveBordersCheckBox(activeObject.hasBorders)
+            setCenteredRotation(activeObject.centeredRotation)
+            setHorizontalMov(activeObject.lockMovementX)
+            setVerticalMov(activeObject.lockMovementY)
+            setLockHorizontalScaling(activeObject.lockScalingX)
+            setLockVerticalScaling(activeObject.lockScalingY)
+            setLockRotation(activeObject.lockRotation)
+            // setScalePattern(activeObject.fill.repeat)
+            setOriginXValue(activeObject.originX)
+            setOriginYValue(activeObject.originY)
+        }
+    };
+
+
+
     useEffect(() => {
-        let activeObject = canvasObj.getActiveObject()
-        setActiveObject(activeObject)
-        console.log("Active Object: ",  activeObject);
+        canvasObj.on('mouse:down', handleMouseDown);
         canvasObj.renderAll()
-    }, [canvasObj.getActiveObject()])
+    }, [])
 
     const fillColorFunc = (clr) => {
         let activeObject = canvasObj.getActiveObject()
@@ -88,16 +116,12 @@ function Object() {
         setHorizontalMov(horizontalMovTemp)
         if (activeObject.group && activeObject.group.lockMovementX && activeObject.group.lockMovementX === true) {
             activeObject.group.lockMovementX = false
-            e.target.classList.remove('pressed')
         } else if (activeObject.group && activeObject.group.lockMovementX === false) {
-            e.target.classList.add('pressed')
             activeObject.group.lockMovementX = true
         } else if (horizontalMovTemp === true) {
-            e.target.classList.add('pressed')
             activeObject.lockMovementX = true
         } else {
             activeObject.lockMovementX = false
-            e.target.classList.remove('pressed')
         }
         canvasObj.renderAll()
     }
@@ -108,16 +132,12 @@ function Object() {
         setVerticalMov(verticalMovTemp)
         if (activeObject.group && activeObject.group.lockMovementY && activeObject.group.lockMovementY === true) {
             activeObject.group.lockMovementY = false
-            e.target.classList.remove('pressed')
         } else if (activeObject.group && activeObject.group.lockMovementY === false) {
             activeObject.group.lockMovementY = true
-            e.target.classList.add('pressed')
         } else if (verticalMovTemp === true) {
-            e.target.classList.add('pressed')
             activeObject.lockMovementY = true
         } else {
             activeObject.lockMovementY = false
-            e.target.classList.remove('pressed')
         }
         canvasObj.renderAll()
     }
@@ -128,16 +148,12 @@ function Object() {
         setLockHorizontalScaling(lockHorizontalScalingTemp)
         if (activeObject.group && activeObject.group.lockScalingX && activeObject.group.lockScalingX === true) {
             activeObject.group.lockScalingX = false;
-            e.target.classList.remove('pressed')
         } else if (activeObject.group && activeObject.group.lockScalingX === false) {
             activeObject.group.lockScalingX = true;
-            e.target.classList.add('pressed')
         } else if (lockHorizontalScalingTemp === true) {
-            e.target.classList.add('pressed')
             activeObject.lockScalingX = true
         } else {
             activeObject.lockScalingX = false
-            e.target.classList.remove('pressed')
         }
         canvasObj.renderAll()
     }
@@ -148,16 +164,12 @@ function Object() {
         setLockVerticalScaling(lockVerticalScalingTemp)
         if (activeObject.group && activeObject.group.lockScalingY && activeObject.group.lockScalingY === true) {
             activeObject.group.lockScalingY = false;
-            e.target.classList.remove('pressed')
         } else if (activeObject.group && activeObject.group.lockScalingY === false) {
             activeObject.group.lockScalingY = true;
-            e.target.classList.add('pressed')
         } else if (lockVerticalScalingTemp === true) {
-            e.target.classList.add('pressed')
             activeObject.lockScalingY = true
         } else {
             activeObject.lockScalingY = false
-            e.target.classList.remove('pressed')
         }
         canvasObj.renderAll()
     }
@@ -168,29 +180,29 @@ function Object() {
         setLockRotation(lockRotationTemp)
         if (activeObject.group && activeObject.group.lockRotation && activeObject.group.lockRotation === true) {
             activeObject.group.lockRotation = false;
-            e.target.classList.remove('pressed')
         } else if (activeObject.group && activeObject.group.lockRotation === false) {
             activeObject.group.lockRotation = true;
-            e.target.classList.add('pressed')
         } else if (lockRotationTemp === true) {
-            e.target.classList.add('pressed')
             activeObject.lockRotation = true
         } else {
             activeObject.lockRotation = false
-            e.target.classList.remove('pressed')
         }
         canvasObj.renderAll()
     }
 
     const onChangeX = (e) => {
         let activeObject = canvasObj.getActiveObject()
-        activeObject.originX = (e.target.value.includes("left") || e.target.value.includes("center") || e.target.value.includes("right")) ? e.target.value : parseFloat(e.target.value)
+        let orginValueTemp = (e.target.value.includes("left") || e.target.value.includes("center") || e.target.value.includes("right")) ? e.target.value : parseFloat(e.target.value)
+        setOriginXValue(orginValueTemp)
+        activeObject.originX = orginValueTemp
         canvasObj.renderAll()
     }
 
     const onChangeY = (e) => {
         let activeObject = canvasObj.getActiveObject()
-        activeObject.originY = (e.target.value.includes("top") || e.target.value.includes("center") || e.target.value.includes("bottom")) ? e.target.value : parseFloat(e.target.value)
+        let originValueTemp = (e.target.value.includes("top") || e.target.value.includes("center") || e.target.value.includes("bottom")) ? e.target.value : parseFloat(e.target.value)
+        activeObject.originY = originValueTemp
+        setOriginYValue(originValueTemp)
         canvasObj.renderAll()
     }
 
@@ -325,39 +337,47 @@ function Object() {
     }
 
     const patternRepeatXFunc = (e) => {
-        let activeObject = canvasObj.getActiveObject()
-        let scaleTemp = scalePattern + 0.00001
-        setScalePattern(scaleTemp)
-        activeObject.fill.repeat = 'repeat-x'
-        activeObject.scale(scaleTemp)
-        canvasObj.renderAll()
+        if (typeof activeObject.fill === "object") {
+            let activeObject = canvasObj.getActiveObject()
+            let scaleTemp = scalePattern + 0.00001
+            setScalePattern(scaleTemp)
+            activeObject.fill.repeat = 'repeat-x'
+            activeObject.scale(scaleTemp)
+            canvasObj.renderAll()
+        }
     }
 
     const patternRepeatFunc = (e) => {
-        let activeObject = canvasObj.getActiveObject()
-        let scaleTemp = scalePattern + 0.00001
-        setScalePattern(scaleTemp)
-        activeObject.scale(scaleTemp)
-        activeObject.fill.repeat = 'repeat'
-        canvasObj.renderAll()
+        if (typeof activeObject.fill === "object") {
+            let activeObject = canvasObj.getActiveObject()
+            let scaleTemp = scalePattern + 0.00001
+            setScalePattern(scaleTemp)
+            activeObject.scale(scaleTemp)
+            activeObject.fill.repeat = 'repeat'
+            canvasObj.renderAll()
+        }
     }
 
     const patternRepeatYFunc = (e) => {
-        let activeObject = canvasObj.getActiveObject()
-        let scaleTemp = scalePattern + 0.00001
-        setScalePattern(scaleTemp)
-        activeObject.scale(scaleTemp)
-        activeObject.fill.repeat = 'repeat-y'
-        canvasObj.renderAll()
+        if (typeof activeObject.fill === "object") {
+            let activeObject = canvasObj.getActiveObject()
+            let scaleTemp = scalePattern + 0.00001
+            setScalePattern(scaleTemp)
+            activeObject.scale(scaleTemp)
+            activeObject.fill.repeat = 'repeat-y'
+            canvasObj.renderAll()
+        }
     }
 
     const patternNoRepeatFunc = (e) => {
-        let activeObject = canvasObj.getActiveObject()
-        let scaleTemp = scalePattern + 0.00001
-        setScalePattern(scaleTemp)
-        activeObject.scale(scaleTemp)
-        activeObject.fill.repeat = 'no-repeat'
-        canvasObj.renderAll()
+        if (typeof activeObject.fill === "object") {
+            let activeObject = canvasObj.getActiveObject()
+            let scaleTemp = scalePattern + 0.00001
+            setScalePattern(scaleTemp)
+            activeObject.scale(scaleTemp)
+            activeObject.fill.repeat = 'no-repeat'
+            canvasObj.renderAll()
+        }
     }
 
     let button
@@ -421,33 +441,33 @@ function Object() {
             {button}
 
             <div className='object-buttons panel-item'>
-                <Button variant="outline-dark" onClick={lockHorizontalMovFunc}>Lock Horizontal Movement</Button>
-                <Button variant="outline-dark" onClick={lockVerticalMovFunc}>Lock Vertical Movement</Button>
-                <Button variant="outline-dark" onClick={lockHorizontalScalingFunc}>Lock Horizontal Scaling</Button>
+                <Button className={lockHorizontalMov && 'pressed'} variant="outline-dark" onClick={lockHorizontalMovFunc}>Lock Horizontal Movement</Button>
+                <Button className={lockVerticalMov && 'pressed'} variant="outline-dark" onClick={lockVerticalMovFunc}>Lock Vertical Movement</Button>
+                <Button className={lockHorizontalScaling && 'pressed'} variant="outline-dark" onClick={lockHorizontalScalingFunc}>Lock Horizontal Scaling</Button>
             </div>
             <div className='object-buttons panel-item'>
-                <Button variant="outline-dark" onClick={lockVerticalScalingFunc}>Lock Vertical Scaling</Button>
-                <Button variant="outline-dark" onClick={lockRotationFunc}>Lock Rotation</Button>
+                <Button className={lockVerticalScaling && 'pressed'} variant="outline-dark" onClick={lockVerticalScalingFunc}>Lock Vertical Scaling</Button>
+                <Button className={lockRotation && 'pressed'} variant="outline-dark" onClick={lockRotationFunc}>Lock Rotation</Button>
             </div>
             <div style={{ marginLeft: "1rem" }} className='originX panel-item' onChange={onChangeX}>
                 Origin X:
-                <input type="radio" value="left" name="originX" /> Left
-                <input type="radio" value="center" name="originX" /> Center
-                <input type="radio" value="right" name="originX" /> Right
-                <input type="radio" value="0.3" name="originX" /> 0.3
-                <input type="radio" value="0.5" name="originX" /> 0.5
-                <input type="radio" value="0.7" name="originX" /> 0.7
-                <input type="radio" value="1" name="originX" /> 1
+                <input type="radio" checked={originXValue == "left"} value="left" name="originX" /> Left
+                <input type="radio" checked={originXValue == "center"} value="center" name="originX" /> Center
+                <input type="radio" checked={originXValue == "right"} value="right" name="originX" /> Right
+                <input type="radio" checked={originXValue == 0.3} value="0.3" name="originX" /> 0.3
+                <input type="radio" checked={originXValue == 0.5} value="0.5" name="originX" /> 0.5
+                <input type="radio" checked={originXValue == 0.7} value="0.7" name="originX" /> 0.7
+                <input type="radio" checked={originXValue == 1} value="1" name="originX" /> 1
             </div>
             <div style={{ marginLeft: "1rem" }} className='originY panel-item' onChange={onChangeY}>
                 Origin Y:
-                <input type="radio" value="top" name="originY" /> Top
-                <input type="radio" value="center" name="originY" /> Center
-                <input type="radio" value="bottom" name="originY" /> Bottom
-                <input type="radio" value="0.3" name="originY" /> 0.3
-                <input type="radio" value="0.5" name="originY" /> 0.5
-                <input type="radio" value="0.7" name="originY" /> 0.7
-                <input type="radio" value="1" name="originY" /> 1
+                <input type="radio" checked={originYValue == "top"}  value="top" name="originY" /> Top
+                <input type="radio" checked={originYValue == "center"} value="center" name="originY" /> Center
+                <input type="radio" checked={originYValue == "bottom"}  value="bottom" name="originY" /> Bottom
+                <input type="radio" checked={originYValue == 0.3}  value="0.3" name="originY" /> 0.3
+                <input type="radio" checked={originYValue == 0.5}  value="0.5" name="originY" /> 0.5
+                <input type="radio" checked={originYValue == 0.7}  value="0.7" name="originY" /> 0.7
+                <input type="radio" checked={originYValue == 1}   value="1" name="originY" /> 1
             </div>
             <div style={{ marginLeft: "1rem" }} className='object-buttons panel-item'>
                 Cache:

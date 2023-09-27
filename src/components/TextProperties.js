@@ -26,10 +26,42 @@ function TextProperties() {
 
 
     useEffect(()=> {
-        setActiveObject(canvasObj.getActiveObject())
-    }, [canvasObj])
+        canvasObj.on('mouse:down', handleMouseDown);
+        canvasObj.on('after:render', handleSelection)
+        canvasObj.renderAll()
+    }, [])
+
+    const handleMouseDown = (event) => {
+        const activeObject = canvasObj.getActiveObject();
+        if (activeObject) {
+            setActiveObject(activeObject)
+            setTextBoxValue(activeObject.text)
+            setFontFamily(activeObject.fontFamily)
+            setTextAlign(activeObject.textAlign)
+            setBackgroundColor(activeObject.backgroundColor)
+            setFontSize(activeObject.fontSize)
+            setLineHeight(activeObject.lineHeight)
+            setCharSpace(activeObject.charSpacing)
+            setBold(activeObject.fontWeight == "bold" ? true : false)
+            setItalic(activeObject.fontStyle == "italic" ? true :  false)
+            setUnderline(activeObject.underline)
+            setLinethrough(activeObject.linethrough)
+            setOverline(activeObject.overline)
+            setBackgroundColor(activeObject.backgroundColor)
+
+            console.log("Active Object: ", activeObject);
+        } 
+    };
+
+    const handleSelection = (e) => {
+        const activeObject = canvasObj.getActiveObject()
+        if (activeObject) {
+            setTextBoxValue(activeObject.text)
+        }
+    }
 
     const changeTextFunc = (e) => {
+        console.log("E: ", e.target.value);
         let textBoxValueTemp = e.target.value
         setTextBoxValue(textBoxValueTemp)
         activeObject.set({
@@ -96,12 +128,10 @@ function TextProperties() {
             activeObject.set({
                 fontWeight: 'bold'
             })
-            e.target.classList.add('pressed')
         } else {
             activeObject.set({
                 fontWeight: 'normal'
             })
-            e.target.classList.remove('pressed')
             setBold(boldTemp)
         }
         canvasObj.renderAll()
@@ -114,13 +144,11 @@ function TextProperties() {
             activeObject.set({
                 fontStyle: 'italic'
             })
-            e.target.classList.add('pressed')
         } else {
             setItalic(italicTemp)
             activeObject.set({
                 fontStyle: 'normal'
             })
-            e.target.classList.remove('pressed')
         }
         canvasObj.renderAll()
     }
@@ -128,10 +156,8 @@ function TextProperties() {
     const underlineTextFunc = (e) => {
         let underlineTemp = !underline
         if (underlineTemp === true) {
-            e.target.classList.add('pressed')
         }
         else {
-            e.target.classList.remove('pressed')
         }
         setUnderline(underlineTemp)
         activeObject.set({
@@ -143,9 +169,7 @@ function TextProperties() {
     const linethroughFunc = (e) => {
         let linethroughTemp = !linethrough
         if (linethroughTemp === true) {
-            e.target.classList.add('pressed')
         } else {
-            e.target.classList.remove('pressed')
         }
         setLinethrough(linethroughTemp)
         activeObject.set({
@@ -157,9 +181,7 @@ function TextProperties() {
     const overlineFunc = (e) => {
         let overlineTemp = !overline
         if (overlineTemp === true) {
-            e.target.classList.add('pressed')
         } else {
-            e.target.classList.remove('pressed')
         }
         setOverline(overlineTemp)
         activeObject.set({
@@ -234,11 +256,11 @@ function TextProperties() {
                     className='custom-slider' />
             </div>
             <div style={{ marginTop: "15px" }} className='button-object'>
-                <Button variant="outline-secondary" onClick={changeBoldFunc}>Bold</Button>
-                <Button style={{ marginLeft: "5px" }} onClick={changeItalicFunc} variant="outline-secondary">Italic</Button>
-                <Button style={{ marginLeft: "5px" }} onClick={underlineTextFunc} variant="outline-secondary">Underline</Button>
-                <Button style={{ marginLeft: "5px" }} onClick={linethroughFunc} variant="outline-secondary">Linethrough</Button>
-                <Button style={{ marginLeft: "5px" }} onClick={overlineFunc} variant="outline-secondary">Overline</Button>
+                <Button className={bold === true && 'pressed'} variant="outline-secondary" onClick={changeBoldFunc}>Bold</Button>
+                <Button className={italic === true && 'pressed'} style={{ marginLeft: "5px" }} onClick={changeItalicFunc} variant="outline-secondary">Italic</Button>
+                <Button className={underline === true && 'pressed'} style={{ marginLeft: "5px" }} onClick={underlineTextFunc} variant="outline-secondary">Underline</Button>
+                <Button className={linethrough === true && 'pressed'} style={{ marginLeft: "5px" }} onClick={linethroughFunc} variant="outline-secondary">Linethrough</Button>
+                <Button className={overline === true && 'pressed'} style={{ marginLeft: "5px" }} onClick={overlineFunc} variant="outline-secondary">Overline</Button>
             </div>
         </div>
     )

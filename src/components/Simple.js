@@ -19,7 +19,6 @@ function Simple() {
         });
 
         canvasObj.add(square);
-        canvasObj.setActiveObject(square)
         canvasObj.renderAll()
     }
 
@@ -33,7 +32,6 @@ function Simple() {
         })
 
         canvasObj.add(rect);
-        canvasObj.setActiveObject(rect)
         canvasObj.renderAll()
     }
 
@@ -46,7 +44,6 @@ function Simple() {
         })
 
         canvasObj.add(circle);
-        canvasObj.setActiveObject(circle)
         canvasObj.renderAll()
     }
 
@@ -60,7 +57,6 @@ function Simple() {
         });
 
         canvasObj.add(triangle);
-        canvasObj.setActiveObject(triangle)
         canvasObj.renderAll()
     }
 
@@ -80,7 +76,6 @@ function Simple() {
         });
 
         canvasObj.add(polygon)
-        canvasObj.setActiveObject(polygon)
         canvasObj.renderAll()
     }
 
@@ -90,7 +85,6 @@ function Simple() {
         });
 
         canvasObj.add(line);
-        canvasObj.setActiveObject(line)
         canvasObj.renderAll()
     }
 
@@ -103,7 +97,6 @@ function Simple() {
         });
 
         canvasObj.add(text);
-        canvasObj.setActiveObject(text)
         canvasObj.renderAll()
     }
 
@@ -114,7 +107,6 @@ function Simple() {
             editable: true
         });
         canvasObj.add(textEditable);
-        canvasObj.setActiveObject(textEditable)
         canvasObj.renderAll()
     }
 
@@ -140,7 +132,6 @@ function Simple() {
             });
 
             canvasObj.add(rect);
-            canvasObj.setActiveObject(rect);
             canvasObj.renderAll();
         };
 
@@ -157,7 +148,6 @@ function Simple() {
             })
 
             canvasObj.add(oImg);
-            canvasObj.setActiveObject(oImg);
             canvasObj.renderAll();
         })
     }
@@ -175,7 +165,6 @@ function Simple() {
             oImg.scale(0.5)
 
             canvasObj.add(oImg);
-            canvasObj.setActiveObject(oImg);
             canvasObj.renderAll();
         });
     }
@@ -200,7 +189,6 @@ function Simple() {
         circle.set('fill', gradient);
 
         canvasObj.add(circle)
-        canvasObj.setActiveObject(circle)
         canvasObj.renderAll()
     }
 
@@ -229,7 +217,6 @@ function Simple() {
         triangle.set('fill', gradient)
 
         canvasObj.add(triangle)
-        canvasObj.setActiveObject(triangle)
         canvasObj.renderAll()
     }
 
@@ -255,7 +242,6 @@ function Simple() {
         rect.set('fill', gradient)
 
         canvasObj.add(rect)
-        canvasObj.setActiveObject(rect)
         canvasObj.renderAll()
     }
 
@@ -273,7 +259,6 @@ function Simple() {
 
 
         canvasObj.add(curvedLine);
-        canvasObj.setActiveObject(curvedLine)
         canvasObj.renderAll()
     }
 
@@ -319,7 +304,6 @@ function Simple() {
         })
 
         canvasObj.add(group)
-        canvasObj.setActiveObject(group)
         canvasObj.renderAll()
     }
 
@@ -352,7 +336,6 @@ function Simple() {
 
 
         canvasObj.add(group);
-        canvasObj.setActiveObject(group)
         canvasObj.renderAll()
     }
 
@@ -389,7 +372,6 @@ function Simple() {
         })
 
         canvasObj.add(group);
-        canvasObj.setActiveObject(group)
         canvasObj.renderAll()
     }
 
@@ -397,21 +379,18 @@ function Simple() {
         var path = new fabric.Path('M121.32,0L44.58,0C36.67,0,29.5,3.22,24.31,8.41c-5.19,5.19-8.41,12.37-8.41,20.28c0,15.82,12.87,28.69,28.69,28.69c0,0,4.4,0,7.48,0C36.66,72.78,8.4,101.04,8.4,101.04C2.98,106.45,0,113.66,0,121.32c0,7.66,2.98,14.87,8.4,20.29l0,0c5.42,5.42,12.62,8.4,20.28,8.4c7.66,0,14.87-2.98,20.29-8.4c0,0,28.26-28.25,43.66-43.66c0,3.08,0,7.48,0,7.48c0,15.82,12.87,28.69,28.69,28.69c7.66,0,14.87-2.99,20.29-8.4c5.42-5.42,8.4-12.62,8.4-20.28l0-76.74c0-7.66-2.98-14.87-8.4-20.29C136.19,2.98,128.98,0,121.32,0z');
 
         canvasObj.add(path.set({ left: 100, top: 200 }));
-        canvasObj.setActiveObject(path)
         canvasObj.renderAll()
     }
 
     const svgPathTwo = () => {
         const path = new fabric.Path('M18.43 255.8L192 224L100.8 292.6C90.67 302.8 97.8 320 112 320h222.7c-9.499-26.5-14.75-54.5-14.75-83.38V194.2L200.3 106.8C176.5 90.88 145 92.75 123.3 111.2l-117.5 116.4C-6.562 238 2.436 258 18.43 255.8zM575.2 289.9l-100.7-50.25c-16.25-8.125-26.5-24.75-26.5-43V160h63.99l28.12 22.62C546.1 188.6 554.2 192 562.7 192h30.1c11.1 0 23.12-6.875 28.5-17.75l14.37-28.62c5.374-10.87 4.25-23.75-2.999-33.5l-74.49-99.37C552.1 4.75 543.5 0 533.5 0H296C288.9 0 285.4 8.625 290.4 13.62L351.1 64L292.4 88.75c-5.874 3-5.874 11.37 0 14.37L351.1 128l-.0011 108.6c0 72 35.99 139.4 95.99 179.4c-195.6 6.75-344.4 41-434.1 60.88c-8.124 1.75-13.87 9-13.87 17.38C.0463 504 8.045 512 17.79 512h499.1c63.24 0 119.6-47.5 122.1-110.8C642.3 354 617.1 310.9 575.2 289.9zM489.1 66.25l45.74 11.38c-2.75 11-12.5 18.88-24.12 18.25C497.7 95.25 484.8 83.38 489.1 66.25z')
         canvasObj.add(path.set({ left: 100, top: 200 }));
-        canvasObj.setActiveObject(path)
         canvasObj.renderAll()
     }
 
     const svgPathThree = () => {
         const path = new fabric.Path('M640 320V368C640 385.7 625.7 400 608 400H574.7C567.1 445.4 527.6 480 480 480C432.4 480 392.9 445.4 385.3 400H254.7C247.1 445.4 207.6 480 160 480C112.4 480 72.94 445.4 65.33 400H32C14.33 400 0 385.7 0 368V256C0 228.9 16.81 205.8 40.56 196.4L82.2 92.35C96.78 55.9 132.1 32 171.3 32H353.2C382.4 32 409.1 45.26 428.2 68.03L528.2 193C591.2 200.1 640 254.8 640 319.1V320zM171.3 96C158.2 96 146.5 103.1 141.6 116.1L111.3 192H224V96H171.3zM272 192H445.4L378.2 108C372.2 100.4 362.1 96 353.2 96H272V192zM525.3 400C527 394.1 528 389.6 528 384C528 357.5 506.5 336 480 336C453.5 336 432 357.5 432 384C432 389.6 432.1 394.1 434.7 400C441.3 418.6 459.1 432 480 432C500.9 432 518.7 418.6 525.3 400zM205.3 400C207 394.1 208 389.6 208 384C208 357.5 186.5 336 160 336C133.5 336 112 357.5 112 384C112 389.6 112.1 394.1 114.7 400C121.3 418.6 139.1 432 160 432C180.9 432 198.7 418.6 205.3 400z')
         canvasObj.add(path.set({ left: 100, top: 200 }))
-        canvasObj.setActiveObject(path)
         canvasObj.renderAll()
     }
 
@@ -423,7 +402,6 @@ function Simple() {
                 left: 200
             })
             canvasObj.add(obj);
-            canvasObj.setActiveObject(obj)
             canvasObj.renderAll();
         })
     }
