@@ -33,6 +33,7 @@ function Object() {
     const [scalePattern, setScalePattern] = useState(1.00001)
     const [originXValue, setOriginXValue] = useState()
     const [originYValue, setOriginYValue] = useState()
+    const [shadowifyCheck, setShadowify] = useState(false)
 
     const [activeObject, setActiveObject] = useState()
 
@@ -59,6 +60,7 @@ function Object() {
             // setScalePattern(activeObject.fill.repeat)
             setOriginXValue(activeObject.originX)
             setOriginYValue(activeObject.originY)
+            setShadowify(activeObject.shadow ? true : false)
         }
     };
 
@@ -293,14 +295,23 @@ function Object() {
 
     const shadowifyFunc = (e) => {
         let activeObject = canvasObj.getActiveObject()
-        activeObject.set('shadow', new fabric.Shadow(
-            {
-                color: "black",
-                blur: 50,
-                offsetX: 20,
-                offsetY: 20,
-            }
-        ))
+        let checkTemp = !shadowifyCheck
+        setShadowify(checkTemp)
+
+        if (checkTemp == true){
+            activeObject.set('shadow', new fabric.Shadow(
+                    {
+                        color: "black",
+                        blur: 50,
+                        offsetX: 20,
+                        offsetY: 20,
+                    }
+                )
+            )
+        } else {
+            activeObject.set({shadow: null})
+        }
+        
         canvasObj.renderAll()
     }
 
@@ -461,13 +472,13 @@ function Object() {
             </div>
             <div style={{ marginLeft: "1rem" }} className='originY panel-item' onChange={onChangeY}>
                 Origin Y:
-                <input type="radio" checked={originYValue == "top"}  value="top" name="originY" /> Top
+                <input type="radio" checked={originYValue == "top"} value="top" name="originY" /> Top
                 <input type="radio" checked={originYValue == "center"} value="center" name="originY" /> Center
-                <input type="radio" checked={originYValue == "bottom"}  value="bottom" name="originY" /> Bottom
-                <input type="radio" checked={originYValue == 0.3}  value="0.3" name="originY" /> 0.3
-                <input type="radio" checked={originYValue == 0.5}  value="0.5" name="originY" /> 0.5
-                <input type="radio" checked={originYValue == 0.7}  value="0.7" name="originY" /> 0.7
-                <input type="radio" checked={originYValue == 1}   value="1" name="originY" /> 1
+                <input type="radio" checked={originYValue == "bottom"} value="bottom" name="originY" /> Bottom
+                <input type="radio" checked={originYValue == 0.3} value="0.3" name="originY" /> 0.3
+                <input type="radio" checked={originYValue == 0.5} value="0.5" name="originY" /> 0.5
+                <input type="radio" checked={originYValue == 0.7} value="0.7" name="originY" /> 0.7
+                <input type="radio" checked={originYValue == 1} value="1" name="originY" /> 1
             </div>
             <div style={{ marginLeft: "1rem" }} className='object-buttons panel-item'>
                 Cache:
@@ -501,7 +512,7 @@ function Object() {
             </div>
             <div className='object-buttons panel-item'>
                 <Button variant='outline-dark' onClick={gradentifyFunc}>Gradentify</Button>
-                <Button variant='outline-dark' onClick={shadowifyFunc}>Shadowify</Button>
+                <Button className={shadowifyCheck && 'pressed'} variant='outline-dark' onClick={shadowifyFunc}>Shadowify</Button>
                 <Button variant='outline-dark' onClick={patternifyFunc}>Patternify</Button>
                 <Button variant='outline-dark' onClick={clipPathFunc}>Clip</Button>
                 <Button variant='outline-dark' onClick={invertedClipPathFunc}>Clip Inverted</Button>
