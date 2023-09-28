@@ -9,7 +9,7 @@ function RightPanel() {
     const [menuPanel, setMenuPanel] = useState("simple");
 
     return (
-        <div className='right-panel'>
+        <div style={{width: "50%"}} className='right-panel'>
             <Nav onSelect={(selectedKey) => setMenuPanel(selectedKey)}>
                 <Nav.Item className="nav-button">
                     <Nav.Link eventKey="simple">Simple</Nav.Link>
@@ -17,7 +17,7 @@ function RightPanel() {
                 <Nav.Item className="nav-button" style={{ marginLeft: "15px" }}>
                     <Nav.Link eventKey="object">Object Properties</Nav.Link>
                 </Nav.Item>
-                <Nav.Item className="nav-button" style={{ marginLeft: "25px" }}>
+                <Nav.Item className="nav-button" style={{ marginLeft: "15px" }}>
                     <Nav.Link eventKey="canvas">Canvas</Nav.Link>
                 </Nav.Item>
             </Nav>
