@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Simple from './Simple';
 import Nav from 'react-bootstrap/Nav';
 import Object from './Object';
 import CanvasProperties from './CanvasProperties';
 import { CSSTransition } from 'react-transition-group';
+import { CanvasStore } from '../store/Context';
 
 function RightPanel() {
-    const [menuPanel, setMenuPanel] = useState("simple");
-
+    const {
+        menuPanel,
+        setMenuPanel
+    } = useContext(CanvasStore);
     return (
         <div style={{width: "50%"}} className='right-panel'>
             <Nav onSelect={(selectedKey) => setMenuPanel(selectedKey)}>

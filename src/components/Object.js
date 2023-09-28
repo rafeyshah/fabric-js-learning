@@ -9,7 +9,7 @@ import TextProperties from './TextProperties';
 
 function Object() {
     const {
-        canvasObj
+        canvasObj,
     } = useContext(CanvasStore);
 
     const [color, setColor] = useState()
@@ -30,12 +30,18 @@ function Object() {
     const [lockHorizontalScaling, setLockHorizontalScaling] = useState(false)
     const [lockVerticalScaling, setLockVerticalScaling] = useState(false)
     const [lockRotation, setLockRotation] = useState(false)
-    const [scalePattern, setScalePattern] = useState(1.00001)
     const [originXValue, setOriginXValue] = useState()
     const [originYValue, setOriginYValue] = useState()
     const [shadowifyCheck, setShadowify] = useState(false)
 
     const [activeObject, setActiveObject] = useState()
+
+    useEffect(() => {
+        setActiveObject(canvasObj.getActiveObject())
+        handleMouseDown()
+        canvasObj.on('mouse:down', handleMouseDown);
+        canvasObj.renderAll()
+    }, [canvasObj])
 
     const handleMouseDown = (event) => {
         const activeObject = canvasObj.getActiveObject();
@@ -63,13 +69,6 @@ function Object() {
             setShadowify(activeObject.shadow ? true : false)
         }
     };
-
-
-
-    useEffect(() => {
-        canvasObj.on('mouse:down', handleMouseDown);
-        canvasObj.renderAll()
-    }, [])
 
     const fillColorFunc = (clr) => {
         let activeObject = canvasObj.getActiveObject()

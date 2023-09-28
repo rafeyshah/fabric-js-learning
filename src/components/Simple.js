@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { fabric } from 'fabric';
 import { CanvasStore } from '../store/Context';
 import bug from '../bug.png'
@@ -6,9 +6,24 @@ import svgPath from './bench.svg'
 import Button from 'react-bootstrap/Button';
 function Simple() {
     const {
-        canvasObj
+        canvasObj,
+        setMenuPanel
     } = useContext(CanvasStore);
 
+    useEffect(()=>{
+        canvasObj && canvasObj.on('mouse:down', handleMouseDown);
+        canvasObj && canvasObj.renderAll()
+    }, [canvasObj])
+
+    const handleMouseDown = (event) => {
+        const activeObject = canvasObj.getActiveObject();
+        console.log("Before");
+        if (activeObject) {
+            setMenuPanel("object")
+            console.log("After");
+        }
+    };
+    
     const addSquare = () => {
         const square = new fabric.Rect({
             left: 100,

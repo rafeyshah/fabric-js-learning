@@ -9,15 +9,20 @@ import {
   
   export function StoreContext({ children }) {
     const [canvasObj, setCanvasObj] = useState(null)
+    const [menuPanel, setMenuPanel] = useState("simple");
+
     const canvasRef = useRef(null);
 
     const canvasProviderValues = useMemo(() => ({
         canvasObj,
         setCanvasObj,
         canvasRef,
+        menuPanel,
+        setMenuPanel
     }), [
         canvasObj,
         canvasRef,
+        menuPanel
     ]);
   
     return (
