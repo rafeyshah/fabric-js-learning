@@ -24,6 +24,24 @@ function CanvasProperties() {
     const [enableHDPI, setEnableHDPI] = useState(false)
     const [offscreenRender, setOffScreenRender] = useState(false)
 
+    const [activeObject, setActiveObject] = useState()
+
+
+    const handleMouseDown = (event) => {
+        const activeObject = canvasObj.getActiveObject();
+        if (activeObject) {
+            setActiveObject(activeObject)
+            setDrawingMode(canvasObj.isDrawingMode)
+        }
+    };
+
+
+
+    useEffect(() => {
+        canvasObj.on('mouse:down', handleMouseDown);
+        canvasObj.renderAll()
+    }, [])
+
     useEffect(() => {
         setNoOfObjects(canvasObj.getObjects().length)
     }, [canvasObj])
@@ -169,7 +187,7 @@ function CanvasProperties() {
             </div>
 
             <div style={{ marginTop: "10px" }}>
-                <Button variant='outline-dark' onClick={enterDrawingMode}>Enter Free Drawing</Button>
+                <Button className={drawingMode && 'pressed'} variant='outline-dark' onClick={enterDrawingMode}>Enter Free Drawing</Button>
             </div>
 
             <div>

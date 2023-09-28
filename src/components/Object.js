@@ -348,45 +348,37 @@ function Object() {
     }
 
     const patternRepeatXFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         if (typeof activeObject.fill === "object") {
-            let activeObject = canvasObj.getActiveObject()
-            let scaleTemp = scalePattern + 0.00001
-            setScalePattern(scaleTemp)
             activeObject.fill.repeat = 'repeat-x'
-            activeObject.scale(scaleTemp)
+            activeObject.dirty = true;
             canvasObj.renderAll()
         }
     }
 
     const patternRepeatFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         if (typeof activeObject.fill === "object") {
-            let activeObject = canvasObj.getActiveObject()
-            let scaleTemp = scalePattern + 0.00001
-            setScalePattern(scaleTemp)
-            activeObject.scale(scaleTemp)
             activeObject.fill.repeat = 'repeat'
+            activeObject.dirty = true;
             canvasObj.renderAll()
         }
     }
 
     const patternRepeatYFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         if (typeof activeObject.fill === "object") {
-            let activeObject = canvasObj.getActiveObject()
-            let scaleTemp = scalePattern + 0.00001
-            setScalePattern(scaleTemp)
-            activeObject.scale(scaleTemp)
             activeObject.fill.repeat = 'repeat-y'
+            activeObject.dirty = true;
             canvasObj.renderAll()
         }
     }
 
     const patternNoRepeatFunc = (e) => {
+        let activeObject = canvasObj.getActiveObject()
         if (typeof activeObject.fill === "object") {
-            let activeObject = canvasObj.getActiveObject()
-            let scaleTemp = scalePattern + 0.00001
-            setScalePattern(scaleTemp)
-            activeObject.scale(scaleTemp)
             activeObject.fill.repeat = 'no-repeat'
+            activeObject.dirty = true;
             canvasObj.renderAll()
         }
     }
