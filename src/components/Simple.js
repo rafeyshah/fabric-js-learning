@@ -10,20 +10,18 @@ function Simple() {
         setMenuPanel
     } = useContext(CanvasStore);
 
-    useEffect(()=>{
+    useEffect(() => {
         canvasObj && canvasObj.on('mouse:down', handleMouseDown);
         canvasObj && canvasObj.renderAll()
     }, [canvasObj])
 
     const handleMouseDown = (event) => {
         const activeObject = canvasObj.getActiveObject();
-        console.log("Before");
         if (activeObject) {
             setMenuPanel("object")
-            console.log("After");
         }
     };
-    
+
     const addSquare = () => {
         const square = new fabric.Rect({
             left: 100,
@@ -76,18 +74,38 @@ function Simple() {
     }
 
     const addPolygon = () => {
-        const polygonPoints = [
-            { x: 200, y: 10 },
-            { x: 250, y: 50 },
-            { x: 250, y: 180 },
-            { x: 150, y: 180 },
-            { x: 150, y: 50 }
-        ];
+        const polygonPoints = [{
+            x: 3, y: 4
+        }, {
+            x: 16, y: 3
+        }, {
+            x: 30, y: 5
+        }, {
+            x: 25, y: 55
+        }, {
+            x: 19, y: 44
+        }, {
+            x: 15, y: 30
+        }, {
+            x: 15, y: 55
+        }, {
+            x: 9, y: 55
+        }, {
+            x: 6, y: 53
+        }, {
+            x: -2, y: 55
+        }, {
+            x: -4, y: 40
+        }, {
+            x: 0, y: 20
+        }]
 
         const polygon = new fabric.Polygon(polygonPoints, {
             fill: '#F96167',
             left: 300,
             top: 300,
+            strokeWidth: 4,
+            stroke: 'green',
         });
 
         canvasObj.add(polygon)
@@ -425,14 +443,14 @@ function Simple() {
 
     return (
         <>
-            <div style={{marginTop: "50px"}} className='panel-item'>
+            <div style={{ marginTop: "50px" }} className='panel-item'>
                 <Button variant="outline-dark" onClick={addSquare}>Add Square</Button>
                 <Button variant="outline-dark" onClick={addRectangle}>Add Rectangle</Button>
                 <Button variant="outline-dark" onClick={addCircle}>Add Circle</Button>
                 <Button variant="outline-dark" onClick={addTriangle}>Add Triangle</Button>
                 <Button variant="outline-dark" onClick={addPolygon}>Add Polygon</Button>
             </div>
-            <div className='panel-item'> 
+            <div className='panel-item'>
                 <Button variant="outline-dark" onClick={line}>Add Line</Button>
                 <Button variant="outline-dark" onClick={addText}>Text</Button>
                 <Button variant="outline-dark" onClick={editableText}>Edit Text</Button>
