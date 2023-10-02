@@ -454,6 +454,184 @@ function Object() {
 
     }
 
+    const tryCustomControls = (e) => {
+        function getObjectSizeWithStroke(object) {
+            var stroke = new fabric.Point(
+                object.strokeUniform ? 1 / object.scaleX : 1,
+                object.strokeUniform ? 1 / object.scaleY : 1
+            ).multiply(object.strokeWidth);
+            return new fabric.Point(object.width + stroke.x, object.height + stroke.y);
+        }
+        function polygonPositionHandler(dim, finalMatrix, fabricObject) {
+            console.log("Fabric Object Points: ", fabricObject.points[this.pointIndex].x, fabricObject.points[this.pointIndex].y);
+            console.log("Offset: ", fabricObject.pathOffset.x, fabricObject.pathOffset.y);
+            var x = (fabricObject.points[this.pointIndex].x - fabricObject.pathOffset.x),
+                y = (fabricObject.points[this.pointIndex].y - fabricObject.pathOffset.y);
+            return fabric.util.transformPoint(
+                { x: x, y: y },
+                fabric.util.multiplyTransformMatrices(
+                    fabricObject.canvas.viewportTransform,
+                    fabricObject.calcTransformMatrix()
+                )
+            );
+        }
+        function actionHandler(eventData, transform, x, y) {
+            var polygon = transform.target,
+                currentControl = polygon.controls[polygon.__corner],
+                mouseLocalPosition = polygon.toLocalPoint(new fabric.Point(x, y), 'center', 'center'),
+                polygonBaseSize = getObjectSizeWithStroke(polygon),
+                size = polygon._getTransformedDimensions(0, 0),
+                finalPointPosition = {
+                    x: mouseLocalPosition.x * polygonBaseSize.x / size.x + polygon.pathOffset.x,
+                    y: mouseLocalPosition.y * polygonBaseSize.y / size.y + polygon.pathOffset.y
+                };
+            polygon.points[currentControl.pointIndex] = finalPointPosition;
+            activeObject.dirty = true
+            return true;
+        }
+
+        function anchorWrapper(anchorIndex, fn) {
+            return function (eventData, transform, x, y) {
+                var fabricObject = transform.target,
+                    absolutePoint = fabric.util.transformPoint({
+                        x: (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x),
+                        y: (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y),
+                    }, fabricObject.calcTransformMatrix()),
+                    actionPerformed = fn(eventData, transform, x, y),
+                    newDim = fabricObject._setPositionDimensions({}),
+                    polygonBaseSize = getObjectSizeWithStroke(fabricObject),
+                    newX = (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x) / polygonBaseSize.x,
+                    newY = (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y) / polygonBaseSize.y;
+                fabricObject.setPositionByOrigin(absolutePoint, newX + 0.5, newY + 0.5);
+
+                return actionPerformed;
+            }
+        }
+
+
+        let activeObject = canvasObj.getActiveObject()
+        const lastControl = activeObject.points.length - 1;
+        activeObject.cornerStyle = 'circle';
+        activeObject.cornerColor = 'yellow';
+        activeObject.transparentCorners = false
+        const indicesToKeep = [1, 7];
+
+        activeObject.controls = activeObject.points.reduce(function (acc, point, index) {
+            if (indicesToKeep.includes(index)) {
+                acc['p' + index] = new fabric.Control({
+                    positionHandler: polygonPositionHandler,
+                    actionHandler: anchorWrapper(index > 0 ? index - 1 : lastControl, actionHandler),
+                    actionName: 'modifyPolygon',
+                    pointIndex: index,
+                });
+            }
+            return acc;
+        }, {});
+
+        canvasObj.renderAll()
+    }
+
+    const customControlsDetailed = (e) => {
+        function getObjectSizeWithStroke(object) {
+            var stroke = new fabric.Point(
+                object.strokeUniform ? 1 / object.scaleX : 1,
+                object.strokeUniform ? 1 / object.scaleY : 1
+            ).multiply(object.strokeWidth);
+            return new fabric.Point(object.width + stroke.x, object.height + stroke.y);
+        }
+        function polygonPositionHandler(dim, finalMatrix, fabricObject) {
+            if (this.pointIndex === 1) {
+                var x = (17),
+                    y = (fabricObject.points[this.pointIndex].y - fabricObject.pathOffset.y);
+            } else if (this.pointIndex === 7) {
+                var x = (-17),
+                    y = (fabricObject.points[this.pointIndex].y - fabricObject.pathOffset.y);
+            }
+            return fabric.util.transformPoint(
+                { x: x, y: y },
+                fabric.util.multiplyTransformMatrices(
+                    fabricObject.canvas.viewportTransform,
+                    fabricObject.calcTransformMatrix()
+                )
+            );
+        }
+        function actionHandler(eventData, transform, x, y) {
+            var activeObject = transform.target
+            var point1 = activeObject.points[1];
+            var point7 = activeObject.points[7];
+            var midPoint = {
+                x: (point1.x + point7.x) / 3,
+                y: (point1.y + point7.y) / 3
+            };
+
+            var radius = 10;
+
+            for (var i = 0; i < activeObject.points.length; i++) {
+                var angle = (i / (activeObject.points.length - 2)) * (2 * Math.PI);
+
+                var newX = midPoint.x + radius * Math.cos(angle);
+                var newY = midPoint.y + radius * Math.sin(angle);
+
+                activeObject.points[i] = new fabric.Point(newX, newY);
+            }
+
+            activeObject.setCoords();
+            activeObject.dirty = true
+            canvasObj.renderAll();
+
+            return true;
+        }
+
+        function anchorWrapper(anchorIndex, fn) {
+            return function (eventData, transform, x, y) {
+                var fabricObject = transform.target,
+                    absolutePoint = fabric.util.transformPoint({
+                        x: (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x),
+                        y: (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y),
+                    }, fabricObject.calcTransformMatrix()),
+                    actionPerformed = fn(eventData, transform, x, y),
+                    newDim = fabricObject._setPositionDimensions({}),
+                    polygonBaseSize = getObjectSizeWithStroke(fabricObject),
+                    newX = (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x) / polygonBaseSize.x,
+                    newY = (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y) / polygonBaseSize.y;
+                fabricObject.setPositionByOrigin(absolutePoint, newX + 0.5, newY + 0.5);
+
+                return actionPerformed;
+            }
+        }
+
+
+        let activeObject = canvasObj.getActiveObject()
+        const lastControl = activeObject.points.length - 1;
+        activeObject.cornerStyle = 'circle';
+        activeObject.cornerColor = 'black';
+        activeObject.transparentCorners = true
+        const indicesToKeep = [1, 7];
+
+        activeObject.controls = activeObject.points.reduce(function (acc, point, index) {
+            if (indicesToKeep.includes(index)) {
+                acc['p' + index] = new fabric.Control({
+                    positionHandler: polygonPositionHandler,
+                    actionHandler: anchorWrapper(index > 0 ? index - 1 : lastControl, actionHandler),
+                    actionName: 'modifyPolygon',
+                    pointIndex: index,
+                });
+            }
+            return acc;
+        }, {});
+
+        canvasObj.renderAll()
+    }
+
+    const defaultControls = (e) => {
+        let poly = canvasObj.getActiveObject()
+        poly.cornerColor = 'blue';
+        poly.cornerStyle = 'rect';
+        poly.controls = fabric.Object.prototype.controls;
+        poly.dirty = true;
+        canvasObj.renderAll()
+    }
+
     let button
     if (activeObject && activeObject.text) {
         button = <TextProperties />
@@ -522,7 +700,12 @@ function Object() {
             <div className='object-buttons panel-item'>
                 <Button className={lockVerticalScaling && 'pressed'} variant="outline-dark" onClick={lockVerticalScalingFunc}>Lock Vertical Scaling</Button>
                 <Button className={lockRotation && 'pressed'} variant="outline-dark" onClick={lockRotationFunc}>Lock Rotation</Button>
+            </div>
+            <div className='object-buttons panel-item'>
                 <Button variant="outline-dark" onClick={customControlsFunc}>Custom Controls</Button>
+                <Button variant='outline-dark' onClick={tryCustomControls}>Trying Custom Controls</Button>
+                <Button variant='outline-dark' onClick={customControlsDetailed}>More Detailed Controls</Button>
+                <Button variant='outline-dark' onClick={defaultControls}>Default Controls</Button>
             </div>
             <div style={{ marginLeft: "1rem" }} className='originX panel-item' onChange={onChangeX}>
                 Origin X:
