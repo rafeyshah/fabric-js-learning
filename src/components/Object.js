@@ -34,14 +34,84 @@ function Object() {
     const [originYValue, setOriginYValue] = useState()
     const [shadowifyCheck, setShadowify] = useState(false)
 
-    const [activeObject, setActiveObject] = useState()
 
+    fabric.Image.prototype._render = function (ctx) {
+
+        const width = this.width,
+            height = this.height,
+            cropWidth = this.cropWidth ? this.cropWidth : this.width,
+            cropHeight = this.cropHeight ? this.cropHeight : this.height,
+            cropX = this.cropX,
+            cropY = this.cropY;
+
+        ctx.save();
+
+        ctx.drawImage(
+            this._element,
+            Math.max(cropX, 0),
+            Math.max(cropY, 0),
+            Math.max(1, cropWidth),
+            Math.max(1, cropHeight),
+            -width / 2,
+            -height / 2,
+            Math.max(0, width),
+            Math.max(0, height)
+        );
+
+        ctx.restore();
+
+    }
+
+    const [activeObject, setActiveObject] = useState()
+    const CLIP_POSITIONS = {
+        LEFT_TOP: "left-top",
+        LEFT_MIDDLE: "left-center",
+        LEFT_BOTTOM: "left-bottom",
+        CENTER_TOP: "center-top",
+        CENTER_MIDDLE: "center-center",
+        CENTER_BOTTOM: "center-bottom",
+        RIGHT_TOP: "right-top",
+        RIGHT_MIDDLE: "right-center",
+        RIGHT_BOTTOM: "right-bottom"
+    }
     useEffect(() => {
         setActiveObject(canvasObj.getActiveObject())
         handleMouseDown()
         canvasObj.on('mouse:down', handleMouseDown);
+        canvasObj.on('after:render', handleSelection)
         canvasObj.renderAll()
     }, [canvasObj])
+
+    const handleSelection = (event) => {
+        fabric.Object.prototype.controls.mr = new fabric.Control({
+            x: 0.5,
+            y: 0,
+            actionHandler: actionScalingOrSkewingCropHandler,
+            render: renderLeftOrRight
+        })
+
+        fabric.Object.prototype.controls.ml = new fabric.Control({
+            x: -0.5,
+            y: 0,
+            actionHandler: actionScalingOrSkewingCropHandler,
+            render: renderLeftOrRight
+        })
+
+        fabric.Object.prototype.controls.mt = new fabric.Control({
+            x: 0,
+            y: -0.5,
+            actionHandler: actionScalingOrSkewingCropHandler,
+            render: renderTopOrBottom
+        })
+
+        fabric.Object.prototype.controls.mb = new fabric.Control({
+            x: 0,
+            y: 0.5,
+            actionHandler: actionScalingOrSkewingCropHandler,
+            render: renderTopOrBottom
+        })
+
+    }
 
     const handleMouseDown = (event) => {
         const activeObject = canvasObj.getActiveObject();
@@ -67,8 +137,146 @@ function Object() {
             setOriginXValue(activeObject.originX)
             setOriginYValue(activeObject.originY)
             setShadowify(activeObject.shadow ? true : false)
+
         }
     };
+
+    const render = (shadowOffsetX, shadowOffsetY, fn) => {
+        // const angle = activeObject.angle;
+        const controlsUtils = fabric.controlsUtils
+
+        return function (ctx, left, top, styleOverride, fabricObject) {
+            if (fabricObject.disableCrop) {
+                return controlsUtils.renderCircleControl(ctx, left, top, styleOverride, fabricObject);
+            }
+
+            ctx.save();
+            ctx.translate(left, top);
+            //   ctx.rotate(fabric.util.degreesToRadians(angle + fabricObject.angle));
+            ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
+            ctx.shadowBlur = 2;
+            ctx.shadowOffsetX = shadowOffsetX;
+            ctx.shadowOffsetY = shadowOffsetY;
+            ctx.beginPath();
+            ctx.lineWidth = 6;
+            ctx.lineCap = "round";
+            ctx.strokeStyle = "#FFFFFF";
+            fn.call(this, ctx)
+            ctx.stroke();
+            ctx.restore();
+        }
+    }
+
+    const renderLeftOrRight = (ctx, left, top, styleOverride, fabricObject) => {
+        render.call(this, 0, 0, function (ctx) {
+            ctx.moveTo(0, -8);
+            ctx.lineTo(0, 8);
+        })(ctx, left, top, styleOverride, fabricObject);
+    }
+
+    const renderTopOrBottom = (ctx, left, top, styleOverride, fabricObject) => {
+        render.call(this, 0, 0, function (ctx) {
+            ctx.moveTo(-8, 0);
+            ctx.lineTo(8, 0);
+        })(ctx, left, top, styleOverride, fabricObject);
+    }
+
+    const actionScalingOrSkewingCropHandler = (eventData, transform, x, y) => {
+        const { target, corner } = transform;
+        const scalingXOrSkewingY = fabric.controlsUtils.scalingXOrSkewingY
+        const scalingYOrSkewingX = fabric.controlsUtils.scalingYOrSkewingX
+
+
+        applyCrop(transform.target);
+
+        if (corner === "mr" || corner === "ml") {
+            return scalingXOrSkewingY(eventData, transform, x, y);
+        }
+
+        if (corner === "mt" || corner === "mb") {
+            return scalingYOrSkewingX(eventData, transform, x, y);
+        }
+    }
+
+    const applyCrop = (activeObject) => {
+
+        const crop = getCrop(
+            activeObject.getOriginalSize(),
+            {
+                width: activeObject.getScaledWidth(),
+                height: activeObject.getScaledHeight(),
+            }
+        );
+
+        activeObject.set(crop);
+        activeObject.setCoords();
+        canvasObj.renderAll()
+    }
+
+    const getCrop = (image, size) => {
+        const width = size.width;
+        const height = size.height;
+        const aspectRatio = width / height;
+
+        let newWidth;
+        let newHeight;
+
+        const imageRatio = image.width / image.height;
+
+        const activeObject = canvasObj.getActiveObject()
+        let clipPosition = activeObject.originX + "-" + activeObject.originY
+
+        if (aspectRatio >= imageRatio) {
+            newWidth = image.width;
+            newHeight = image.width / aspectRatio;
+        } else {
+            newWidth = image.height * aspectRatio;
+            newHeight = image.height;
+        }
+
+        let x = 0;
+        let y = 0;
+
+        if (clipPosition === CLIP_POSITIONS.LEFT_TOP) {
+            x = 0;
+            y = 0;
+        } else if (clipPosition === CLIP_POSITIONS.LEFT_MIDDLE) {
+            x = 0;
+            y = (image.height - newHeight) / 2;
+        } else if (clipPosition === CLIP_POSITIONS.LEFT_BOTTOM) {
+            x = 0;
+            y = image.height - newHeight;
+        } else if (clipPosition === CLIP_POSITIONS.CENTER_TOP) {
+            x = (image.width - newWidth) / 2;
+            y = 0;
+        } else if (clipPosition === CLIP_POSITIONS.CENTER_MIDDLE) {
+            x = (image.width - newWidth) / 2;
+            y = (image.height - newHeight) / 2;
+        } else if (clipPosition === CLIP_POSITIONS.CENTER_BOTTOM) {
+            x = (image.width - newWidth) / 2;
+            y = image.height - newHeight;
+        } else if (clipPosition === CLIP_POSITIONS.RIGHT_TOP) {
+            x = image.width - newWidth;
+            y = 0;
+        } else if (clipPosition === CLIP_POSITIONS.RIGHT_MIDDLE) {
+            x = image.width - newWidth;
+            y = (image.height - newHeight) / 2;
+        } else if (clipPosition === CLIP_POSITIONS.RIGHT_BOTTOM) {
+            x = image.width - newWidth;
+            y = image.height - newHeight;
+        } else {
+            console.error(
+                new Error("Unknown clip position property - " + clipPosition)
+            );
+        }
+
+        return {
+            cropX: x,
+            cropY: y,
+            cropWidth: newWidth,
+            cropHeight: newHeight
+        };
+    }
 
     const fillColorFunc = (clr) => {
         let activeObject = canvasObj.getActiveObject()
@@ -391,8 +599,6 @@ function Object() {
             return new fabric.Point(object.width + stroke.x, object.height + stroke.y);
         }
         function polygonPositionHandler(dim, finalMatrix, fabricObject) {
-            console.log("Fabric Object Points: ", fabricObject.points[this.pointIndex].x, fabricObject.points[this.pointIndex].y);
-            console.log("Offset: ", fabricObject.pathOffset.x, fabricObject.pathOffset.y);
             var x = (fabricObject.points[this.pointIndex].x - fabricObject.pathOffset.x),
                 y = (fabricObject.points[this.pointIndex].y - fabricObject.pathOffset.y);
             return fabric.util.transformPoint(
@@ -463,8 +669,6 @@ function Object() {
             return new fabric.Point(object.width + stroke.x, object.height + stroke.y);
         }
         function polygonPositionHandler(dim, finalMatrix, fabricObject) {
-            console.log("Fabric Object Points: ", fabricObject.points[this.pointIndex].x, fabricObject.points[this.pointIndex].y);
-            console.log("Offset: ", fabricObject.pathOffset.x, fabricObject.pathOffset.y);
             var x = (fabricObject.points[this.pointIndex].x - fabricObject.pathOffset.x),
                 y = (fabricObject.points[this.pointIndex].y - fabricObject.pathOffset.y);
             return fabric.util.transformPoint(

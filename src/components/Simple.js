@@ -174,11 +174,12 @@ function Simple() {
         fabric.Image.fromURL(bug, function (oImg) {
             oImg.set({
                 top: 100,
-                left: 400,
-                width: 250,
-                height: 250,
-                angle: 90
+                left: 20,
+                originX: 'center',
+                originY: 'center'
             })
+
+            oImg.scale(0.3)
 
             canvasObj.add(oImg);
             canvasObj.renderAll();
