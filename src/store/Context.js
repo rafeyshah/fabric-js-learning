@@ -10,6 +10,8 @@ import {
   export function StoreContext({ children }) {
     const [canvasObj, setCanvasObj] = useState(null)
     const [menuPanel, setMenuPanel] = useState("simple");
+    const [activeObject, setActiveObject] = useState()
+    const [textEditable, setTextEditable] = useState(null)
 
     const canvasRef = useRef(null);
 
@@ -18,11 +20,17 @@ import {
         setCanvasObj,
         canvasRef,
         menuPanel,
-        setMenuPanel
+        setMenuPanel,
+        activeObject,
+        setActiveObject,
+        textEditable,
+        setTextEditable
     }), [
         canvasObj,
         canvasRef,
-        menuPanel
+        menuPanel,
+        activeObject,
+        textEditable
     ]);
   
     return (

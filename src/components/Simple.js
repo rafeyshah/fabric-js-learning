@@ -7,7 +7,11 @@ import Button from 'react-bootstrap/Button';
 function Simple() {
     const {
         canvasObj,
-        setMenuPanel
+        setMenuPanel,
+        activeObject,
+        setActiveObject,
+        textEditable,
+        setTextEditable
     } = useContext(CanvasStore);
 
     useEffect(() => {
@@ -139,7 +143,10 @@ function Simple() {
             width: 500,
             editable: true
         });
+
+        setTextEditable(textEditable)
         canvasObj.add(textEditable);
+        canvasObj.setActiveObject(textEditable)
         canvasObj.renderAll()
     }
 

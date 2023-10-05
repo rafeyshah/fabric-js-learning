@@ -6,10 +6,11 @@ import { SketchPicker } from 'react-color';
 
 function TextProperties() {
     const {
-        canvasObj
+        canvasObj,
+        textEditable
     } = useContext(CanvasStore);
 
-    const [activeObject, setActiveObject] = useState(canvasObj.getActiveObject())
+    const [activeObject, setActiveObject] = useState(textEditable ? textEditable : canvasObj.getActiveObject())
     const [textBoxValue, setTextBoxValue] = useState(canvasObj.getActiveObject().text)
     const [fontFamily, setFontFamily] = useState(canvasObj.getActiveObject().fontFamily)
     const [textAlign, setTextAlign] = useState(canvasObj.getActiveObject.textAlign)
@@ -25,14 +26,23 @@ function TextProperties() {
     const [backgroundColorCheck, setBackgroundColorCheck] = useState(false)
 
 
-    useEffect(()=> {
+    useEffect(() => {
         canvasObj.on('mouse:down', handleMouseDown);
         canvasObj.on('after:render', handleSelection)
         canvasObj.renderAll()
     }, [])
 
+    // useEffect(()=> {
+
+    //     const left = groupObjects.left
+    //     const top = groupObjects.top
+    //     const width = groupObjects.getScaledWidth()
+    //     const height = groupObjects.getScaledHeight()
+    // }, [canvasObj])
+
     const handleMouseDown = (event) => {
-        const activeObject = canvasObj.getActiveObject();
+        const activeObject = textEditable ? textEditable : canvasObj.getActiveObject();
+
         if (activeObject) {
             setActiveObject(activeObject)
             setTextBoxValue(activeObject.text)
@@ -43,25 +53,24 @@ function TextProperties() {
             setLineHeight(activeObject.lineHeight)
             setCharSpace(activeObject.charSpacing)
             setBold(activeObject.fontWeight == "bold" ? true : false)
-            setItalic(activeObject.fontStyle == "italic" ? true :  false)
+            setItalic(activeObject.fontStyle == "italic" ? true : false)
             setUnderline(activeObject.underline)
             setLinethrough(activeObject.linethrough)
             setOverline(activeObject.overline)
             setBackgroundColor(activeObject.backgroundColor)
 
-            console.log("Active Object: ", activeObject);
-        } 
+            console.log("Inside");
+        }
     };
 
     const handleSelection = (e) => {
-        const activeObject = canvasObj.getActiveObject()
+        const activeObject = textEditable ? textEditable : canvasObj.getActiveObject()
         if (activeObject) {
             setTextBoxValue(activeObject.text)
         }
     }
 
     const changeTextFunc = (e) => {
-        console.log("E: ", e.target.value);
         let textBoxValueTemp = e.target.value
         setTextBoxValue(textBoxValueTemp)
         activeObject.set({
@@ -190,11 +199,67 @@ function TextProperties() {
         canvasObj.renderAll()
     }
 
+    const leftMove = () => {
+        textEditable.dirty = true
+        setActiveObject(textEditable)
+
+        let rightPrev = activeObject.left
+        activeObject.set({
+            left: rightPrev - 15
+        })
+
+        canvasObj.renderAll()
+    }
+
+    const rightMove = () => {
+
+        textEditable.dirty = true
+        setActiveObject(textEditable)
+
+        let leftPrev = activeObject.left
+        activeObject.set({
+            left: leftPrev + 15
+        })
+
+        canvasObj.renderAll()
+
+    }
+
+    const topMove = () => {
+        textEditable.dirty = true
+        setActiveObject(textEditable)
+
+        let bottomPrev = activeObject.top
+        activeObject.set({
+            top: bottomPrev - 15
+        })
+
+        canvasObj.renderAll()
+    }
+
+    const downMove = () => {
+        textEditable.dirty = true
+        setActiveObject(textEditable)
+
+        let topPrev = activeObject.top
+        activeObject.set({
+            top: topPrev + 15
+        })
+
+        canvasObj.renderAll()
+    }
+
     return (
         <div style={{ border: "1px solid black", padding: "20px", flexDirection: "column" }}>
             <div>
                 Text Specific Controls
                 <textarea style={{ marginLeft: "13px" }} type='textarea' rows="3" column="80" value={textBoxValue} onChange={changeTextFunc} />
+            </div>
+            <div className='button-object'>
+                <Button variant='outline-dark' onClick={leftMove}>Left Move</Button>
+                <Button variant='outline-dark' onClick={rightMove}>Right Move</Button>
+                <Button variant='outline-dark' onClick={topMove}>Top Move</Button>
+                <Button variant='outline-dark' onClick={downMove}>Down Move</Button>
             </div>
             <div>
                 Font Family:

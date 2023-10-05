@@ -112,7 +112,6 @@ function CanvasProperties() {
 
     const lineWidthSliderFunc = (e) => {
         let sliderTemp = e.target.value
-        console.log(sliderTemp);
         setLineWidthSlider(sliderTemp)
         canvasObj.freeDrawingBrush.width = sliderTemp
         canvasObj.renderAll()

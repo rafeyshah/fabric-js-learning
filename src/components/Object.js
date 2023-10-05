@@ -10,6 +10,8 @@ import TextProperties from './TextProperties';
 function Object() {
     const {
         canvasObj,
+        textEditable,
+        setTextEditable
     } = useContext(CanvasStore);
 
     const [color, setColor] = useState()
@@ -35,34 +37,7 @@ function Object() {
     const [shadowifyCheck, setShadowify] = useState(false)
 
 
-    fabric.Image.prototype._render = function (ctx) {
-
-        const width = this.width,
-            height = this.height,
-            cropWidth = this.cropWidth ? this.cropWidth : this.width,
-            cropHeight = this.cropHeight ? this.cropHeight : this.height,
-            cropX = this.cropX,
-            cropY = this.cropY;
-
-        ctx.save();
-
-        ctx.drawImage(
-            this._element,
-            Math.max(cropX, 0),
-            Math.max(cropY, 0),
-            Math.max(1, cropWidth),
-            Math.max(1, cropHeight),
-            -width / 2,
-            -height / 2,
-            Math.max(0, width),
-            Math.max(0, height)
-        );
-
-        ctx.restore();
-
-    }
-
-    const [activeObject, setActiveObject] = useState()
+    const [activeObject, setActiveObject] = useState(canvasObj.getActiveObject())
     const CLIP_POSITIONS = {
         LEFT_TOP: "left-top",
         LEFT_MIDDLE: "left-center",
@@ -74,47 +49,55 @@ function Object() {
         RIGHT_MIDDLE: "right-center",
         RIGHT_BOTTOM: "right-bottom"
     }
+
     useEffect(() => {
-        setActiveObject(canvasObj.getActiveObject())
+        let activeObject = canvasObj.getActiveObject()
+        setActiveObject(activeObject)
         handleMouseDown()
         canvasObj.on('mouse:down', handleMouseDown);
         canvasObj.on('after:render', handleSelection)
+
         canvasObj.renderAll()
     }, [canvasObj])
 
     const handleSelection = (event) => {
-        fabric.Object.prototype.controls.mr = new fabric.Control({
-            x: 0.5,
-            y: 0,
-            actionHandler: actionScalingOrSkewingCropHandler,
-            render: renderLeftOrRight
-        })
+        let activeObject = canvasObj.getActiveObject()
+        if (activeObject && activeObject._element && activeObject._element.classList && activeObject._element.classList[0].includes('img')) {
+            fabric.Object.prototype.controls.mr = new fabric.Control({
+                x: 0.5,
+                y: 0,
+                actionHandler: actionScalingOrSkewingCropHandler,
+                render: renderLeftOrRight
+            })
 
-        fabric.Object.prototype.controls.ml = new fabric.Control({
-            x: -0.5,
-            y: 0,
-            actionHandler: actionScalingOrSkewingCropHandler,
-            render: renderLeftOrRight
-        })
+            fabric.Object.prototype.controls.ml = new fabric.Control({
+                x: -0.5,
+                y: 0,
+                actionHandler: actionScalingOrSkewingCropHandler,
+                render: renderLeftOrRight
+            })
 
-        fabric.Object.prototype.controls.mt = new fabric.Control({
-            x: 0,
-            y: -0.5,
-            actionHandler: actionScalingOrSkewingCropHandler,
-            render: renderTopOrBottom
-        })
+            fabric.Object.prototype.controls.mt = new fabric.Control({
+                x: 0,
+                y: -0.5,
+                actionHandler: actionScalingOrSkewingCropHandler,
+                render: renderTopOrBottom
+            })
 
-        fabric.Object.prototype.controls.mb = new fabric.Control({
-            x: 0,
-            y: 0.5,
-            actionHandler: actionScalingOrSkewingCropHandler,
-            render: renderTopOrBottom
-        })
+            fabric.Object.prototype.controls.mb = new fabric.Control({
+                x: 0,
+                y: 0.5,
+                actionHandler: actionScalingOrSkewingCropHandler,
+                render: renderTopOrBottom
+            })
+        }
 
     }
 
     const handleMouseDown = (event) => {
-        const activeObject = canvasObj.getActiveObject();
+        const activeObject = canvasObj.getActiveObject()
+        const groupObjects = canvasObj.getObjects();
+
         if (activeObject) {
             setActiveObject(activeObject)
             setSliderValue(activeObject.opacity * 100)
@@ -138,7 +121,44 @@ function Object() {
             setOriginYValue(activeObject.originY)
             setShadowify(activeObject.shadow ? true : false)
 
+            if (activeObject._element && activeObject._element.classList && activeObject._element.classList[0].includes('img')) {
+                fabric.Image.prototype._render = function (ctx) {
+
+                    const width = this.width,
+                        height = this.height,
+                        cropWidth = this.cropWidth ? this.cropWidth : this.width,
+                        cropHeight = this.cropHeight ? this.cropHeight : this.height,
+                        cropX = this.cropX,
+                        cropY = this.cropY;
+
+                    ctx.save();
+
+                    ctx.drawImage(
+                        this._element,
+                        Math.max(cropX, 0),
+                        Math.max(cropY, 0),
+                        Math.max(1, cropWidth),
+                        Math.max(1, cropHeight),
+                        -width / 2,
+                        -height / 2,
+                        Math.max(0, width),
+                        Math.max(0, height)
+                    );
+
+                    ctx.restore();
+
+                }
+            }
+
         }
+
+        if (groupObjects && event && event.subTargets) {
+            setActiveObject(event.subTargets[0])
+            setTextEditable(event.subTargets[0])
+            // console.log(event.subTargets[0]);
+            canvasObj.renderAll()
+        }
+
     };
 
     const render = (shadowOffsetX, shadowOffsetY, fn) => {
@@ -397,6 +417,30 @@ function Object() {
             activeObject.lockRotation = false
         }
         canvasObj.renderAll()
+    }
+
+    const groupSelection = (e) => {
+        if (!canvasObj.getActiveObject()) {
+            return;
+        }
+        if (canvasObj.getActiveObject().type !== 'activeSelection') {
+            return;
+        }
+        const group = canvasObj.getActiveObject().toGroup();
+        group.subTargetCheck = true;
+        canvasObj.add(group);
+        canvasObj.renderAll();
+    }
+
+    const unGroupSelection = (e) => {
+        if (!canvasObj.getActiveObject()) {
+            return;
+        }
+        if (canvasObj.getActiveObject().type !== 'group') {
+            return;
+        }
+        canvasObj.getActiveObject().toActiveSelection();
+        canvasObj.requestRenderAll();
     }
 
     const onChangeX = (e) => {
@@ -837,6 +881,7 @@ function Object() {
     }
 
     let button
+    console.log("Active Object: ", activeObject);
     if (activeObject && activeObject.text) {
         button = <TextProperties />
     } else {
@@ -904,6 +949,8 @@ function Object() {
             <div className='object-buttons panel-item'>
                 <Button className={lockVerticalScaling && 'pressed'} variant="outline-dark" onClick={lockVerticalScalingFunc}>Lock Vertical Scaling</Button>
                 <Button className={lockRotation && 'pressed'} variant="outline-dark" onClick={lockRotationFunc}>Lock Rotation</Button>
+                <Button variant="outline-dark" onClick={groupSelection}>Group Selection</Button>
+                <Button variant="outline-dark" onClick={unGroupSelection}>Ungroup Selection</Button>
             </div>
             <div className='object-buttons panel-item'>
                 <Button variant="outline-dark" onClick={customControlsFunc}>Custom Controls</Button>

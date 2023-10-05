@@ -25,10 +25,7 @@ function Canvas() {
         };
     }, []);
 
-    const getActiveObject = (e) => {
-        console.log("Called");
-        console.log(canvasObj.getActiveObject());
-    }
+
 
     return (
         <>
