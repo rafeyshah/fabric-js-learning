@@ -4,19 +4,20 @@ import { Button } from 'react-bootstrap';
 import { SketchPicker } from 'react-color';
 
 
-function TextProperties() {
+function TextProperties({ currentObject }) {
     const {
         canvasObj,
         textEditable
     } = useContext(CanvasStore);
 
-    const [activeObject, setActiveObject] = useState(textEditable ? textEditable : canvasObj.getActiveObject())
-    const [textBoxValue, setTextBoxValue] = useState(canvasObj.getActiveObject().text)
-    const [fontFamily, setFontFamily] = useState(canvasObj.getActiveObject().fontFamily)
-    const [textAlign, setTextAlign] = useState(canvasObj.getActiveObject.textAlign)
-    const [fontSize, setFontSize] = useState(canvasObj.getActiveObject().fontSize)
-    const [lineHeight, setLineHeight] = useState(canvasObj.getActiveObject().lineHeight)
-    const [charSpace, setCharSpace] = useState(canvasObj.getActiveObject().charSpace)
+    const [activeObject, setActiveObject] = useState(currentObject)
+    // const [groupActiveObj, setGroupActiveObj] = useState()
+    const [textBoxValue, setTextBoxValue] = useState(currentObject.text)
+    const [fontFamily, setFontFamily] = useState(currentObject.fontFamily)
+    const [textAlign, setTextAlign] = useState(currentObject.getActiveObject?.textAlign)
+    const [fontSize, setFontSize] = useState(currentObject?.fontSize)
+    const [lineHeight, setLineHeight] = useState(currentObject?.lineHeight)
+    const [charSpace, setCharSpace] = useState(currentObject?.charSpace)
     const [bold, setBold] = useState(false)
     const [italic, setItalic] = useState(false)
     const [underline, setUnderline] = useState(false)
@@ -24,13 +25,21 @@ function TextProperties() {
     const [overline, setOverline] = useState(false)
     const [backgroundColor, setBackgroundColor] = useState("")
     const [backgroundColorCheck, setBackgroundColorCheck] = useState(false)
+    const [move, setMove] = useState(false)
 
 
     useEffect(() => {
+        const activeObject2 = textEditable ? textEditable : canvasObj.getActiveObject();
+        setActiveObject(activeObject2)
+
         canvasObj.on('mouse:down', handleMouseDown);
         canvasObj.on('after:render', handleSelection)
         canvasObj.renderAll()
-    }, [])
+    }, [canvasObj])
+
+    useEffect(() => {
+        handleSelection()
+    }, [move])
 
     // useEffect(()=> {
 
@@ -41,8 +50,11 @@ function TextProperties() {
     // }, [canvasObj])
 
     const handleMouseDown = (event) => {
+        // console.log("Text Editable: ", textEditable);
+        // console.log("Active Object: ", canvasObj.getActiveObject());
         const activeObject = textEditable ? textEditable : canvasObj.getActiveObject();
-
+        // console.log("Selected Object:  ", activeObject);
+        // console.log("Active Object: ", activeObject);
         if (activeObject) {
             setActiveObject(activeObject)
             setTextBoxValue(activeObject.text)
@@ -59,14 +71,66 @@ function TextProperties() {
             setOverline(activeObject.overline)
             setBackgroundColor(activeObject.backgroundColor)
 
-            console.log("Inside");
+            // console.log("Inside");
         }
     };
 
     const handleSelection = (e) => {
+        const groupObject = canvasObj.getActiveObject()
         const activeObject = textEditable ? textEditable : canvasObj.getActiveObject()
         if (activeObject) {
             setTextBoxValue(activeObject.text)
+        }
+
+        if (move == true && groupObject && groupObject._objects) {
+            let groupObjectTrans = groupObject.getBoundingRect(true, true);
+            // let left = groupObjectTrans.left
+            // let top = groupObjectTrans.top
+            // let width = groupObjectTrans.width
+            // let height = groupObjectTrans.height
+
+            let activeObjectTrans = activeObject.calcTransformMatrix();
+
+            console.log("\n\n***************");
+            console.log("Group Object");
+            // console.log("Top: ", top);
+            console.log("Left: ", groupObject.left);
+            console.log("Width: ", groupObject.width);
+
+            // console.log("Width: ", width);
+            // console.log("Height: ", height);
+            console.log("\nEditable Text");
+            console.log("Top: ", activeObjectTrans[5]);
+            console.log("Left: ", activeObjectTrans[4]);
+            console.log("Width: ", activeObject.width);
+            // console.log("Heigh/t: ", activeObject.height);
+            console.log("***************");
+
+            let leftBorder = (activeObjectTrans[4] - activeObject.width / 2)
+            let topBorder = (activeObjectTrans[5] - activeObject.height / 2)
+            console.log(`leftBorder: ${leftBorder} >= width: ${groupObject.width}`);
+            if (leftBorder <= groupObject.left) {
+                groupObject.width += 20
+                activeObject.left += 5
+            }
+            else if (leftBorder >= groupObject.width) {
+                groupObject.width = groupObject.width + 25;
+                activeObject.left = activeObject.left - 50;
+            }
+            else if (topBorder <= groupObject.top) {
+                groupObject.height += 20
+                activeObject.top += 5
+            }
+            else if (topBorder >= groupObject.height) {
+                groupObject.height += 20
+                activeObject.top -= 50
+            }
+
+            setMove(false)
+            groupObject.dirty = true
+            activeObject.dirty = true
+            canvasObj.renderAll()
+
         }
     }
 
@@ -207,11 +271,23 @@ function TextProperties() {
         activeObject.set({
             left: rightPrev - 15
         })
-
+        setMove(true)
         canvasObj.renderAll()
     }
 
     const rightMove = () => {
+
+        // let groupObjects = canvasObj.groupObjects()s
+        // console.log("\n\n");
+
+        // var m = activeObject.calcTransformMatrix();
+
+        // return {left: m[4], top: m[5]};
+        // console.log("Bounding Rect Left: ", m[4])
+        // console.log("Bounding Rect Top: ", m[5])
+        // console.log("Active Object: ", activeObject)
+        // console.log("Active Object Width: ", activeObject.width);
+        // console.log("Active Object Height: ", activeObject.height);
 
         textEditable.dirty = true
         setActiveObject(textEditable)
@@ -221,6 +297,7 @@ function TextProperties() {
             left: leftPrev + 15
         })
 
+        setMove(true)
         canvasObj.renderAll()
 
     }
@@ -233,7 +310,7 @@ function TextProperties() {
         activeObject.set({
             top: bottomPrev - 15
         })
-
+        setMove(true)
         canvasObj.renderAll()
     }
 
@@ -245,7 +322,7 @@ function TextProperties() {
         activeObject.set({
             top: topPrev + 15
         })
-
+        setMove(true)
         canvasObj.renderAll()
     }
 

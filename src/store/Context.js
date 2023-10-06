@@ -12,6 +12,7 @@ import {
     const [menuPanel, setMenuPanel] = useState("simple");
     const [activeObject, setActiveObject] = useState()
     const [textEditable, setTextEditable] = useState(null)
+    const [groupActive,  setGroupActive] = useState()
 
     const canvasRef = useRef(null);
 
@@ -24,13 +25,16 @@ import {
         activeObject,
         setActiveObject,
         textEditable,
-        setTextEditable
+        setTextEditable,
+        groupActive,
+        setGroupActive
     }), [
         canvasObj,
         canvasRef,
         menuPanel,
         activeObject,
-        textEditable
+        textEditable,
+        groupActive
     ]);
   
     return (

@@ -18,6 +18,7 @@ function Canvas() {
         });
 
         setCanvasObj(newCanvas)
+        window.canvas = newCanvas
 
         // Clean up the canvas when the component unmounts
         return () => {

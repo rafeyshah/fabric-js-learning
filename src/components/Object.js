@@ -51,18 +51,23 @@ function Object() {
     }
 
     useEffect(() => {
-        let activeObject = canvasObj.getActiveObject()
-        setActiveObject(activeObject)
+        let activeObject2 = canvasObj.getActiveObject()
+
+        setActiveObject(activeObject2)
         handleMouseDown()
+
         canvasObj.on('mouse:down', handleMouseDown);
         canvasObj.on('after:render', handleSelection)
-
         canvasObj.renderAll()
     }, [canvasObj])
 
+
+
     const handleSelection = (event) => {
-        let activeObject = canvasObj.getActiveObject()
-        if (activeObject && activeObject._element && activeObject._element.classList && activeObject._element.classList[0].includes('img')) {
+        // const editableText = activeObject
+        let activeObject2 = canvasObj.getActiveObject()
+
+        if (activeObject2 && activeObject2._element && activeObject2._element.classList && activeObject2._element.classList[0].includes('img')) {
             fabric.Object.prototype.controls.mr = new fabric.Control({
                 x: 0.5,
                 y: 0,
@@ -91,14 +96,41 @@ function Object() {
                 render: renderTopOrBottom
             })
         }
+        
+        // if (activeObject2 && activeObject2._objects) {
+        //     let groupObject = activeObject2.calcTransformMatrix();
+        //     let left = groupObject[4]
+        //     let top = groupObject[5]
+        //     let width = activeObject2.width
+        //     let height = activeObject2.height
 
+        //     console.log("\n\n***************");
+        //     console.log("Group Object");
+        //     console.log("Top: ", top);
+        //     console.log("Left: ", left);
+        //     console.log("Width: ", width);
+        //     console.log("Height: ", height);
+        //     console.log("\nEditable Text");
+        //     console.log("Top: ", editableText.top);
+        //     console.log("Left: ", editableText.left);
+        //     console.log("Width: ", editableText.width);
+        //     console.log("Height: ", editableText.height);
+        //     console.log("***************");
+            
+
+        // }
     }
 
     const handleMouseDown = (event) => {
+
         const activeObject = canvasObj.getActiveObject()
-        const groupObjects = canvasObj.getObjects();
+        
+        // console.log("Group Objects: ", groupObjects);
+
+        // console.log("\n\nEvents: ", event);
 
         if (activeObject) {
+            // console.log("2");
             setActiveObject(activeObject)
             setSliderValue(activeObject.opacity * 100)
             setStrokeWidth(activeObject.strokeWidth * 10)
@@ -152,12 +184,13 @@ function Object() {
 
         }
 
-        if (groupObjects && event && event.subTargets) {
+        if (event && event.subTargets.length > 0) {
             setActiveObject(event.subTargets[0])
             setTextEditable(event.subTargets[0])
-            // console.log(event.subTargets[0]);
+            // console.log("1");
             canvasObj.renderAll()
         }
+
 
     };
 
@@ -880,10 +913,11 @@ function Object() {
         canvasObj.renderAll()
     }
 
+    // console.log("Active Object: ", activeObject);
+
     let button
-    console.log("Active Object: ", activeObject);
     if (activeObject && activeObject.text) {
-        button = <TextProperties />
+        button = <TextProperties currentObject={activeObject} />
     } else {
         button = null
     }

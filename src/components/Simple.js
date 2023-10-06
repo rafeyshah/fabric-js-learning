@@ -140,7 +140,7 @@ function Simple() {
     const editableText = () => {
         const textEditable = new fabric.Textbox(
             'Editable Textbox', {
-            width: 500,
+            width: 250,
             editable: true
         });
 
