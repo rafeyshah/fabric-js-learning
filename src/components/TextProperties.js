@@ -76,59 +76,66 @@ function TextProperties({ currentObject }) {
     };
 
     const handleSelection = (e) => {
-        const groupObject = canvasObj.getActiveObject()
+        let groupObject = canvasObj.getActiveObject()
         const activeObject = textEditable ? textEditable : canvasObj.getActiveObject()
         if (activeObject) {
             setTextBoxValue(activeObject.text)
         }
 
         if (move == true && groupObject && groupObject._objects) {
-            let groupObjectTrans = groupObject.getBoundingRect(true, true);
-            // let left = groupObjectTrans.left
-            // let top = groupObjectTrans.top
-            // let width = groupObjectTrans.width
-            // let height = groupObjectTrans.height
-
-            let activeObjectTrans = activeObject.calcTransformMatrix();
-
             console.log("\n\n***************");
             console.log("Group Object");
-            // console.log("Top: ", top);
             console.log("Left: ", groupObject.left);
+            console.log("Top: ", groupObject.top);
+            console.log("Height: ", groupObject.height);
             console.log("Width: ", groupObject.width);
 
-            // console.log("Width: ", width);
-            // console.log("Height: ", height);
             console.log("\nEditable Text");
-            console.log("Top: ", activeObjectTrans[5]);
-            console.log("Left: ", activeObjectTrans[4]);
+            console.log("Top: ", activeObject.top);
+            console.log("Left: ", activeObject.left);
+            console.log("Height: ", activeObject.height);
             console.log("Width: ", activeObject.width);
-            // console.log("Heigh/t: ", activeObject.height);
             console.log("***************");
 
-            let leftBorder = (activeObjectTrans[4] - activeObject.width / 2)
-            let topBorder = (activeObjectTrans[5] - activeObject.height / 2)
-            console.log(`leftBorder: ${leftBorder} >= width: ${groupObject.width}`);
+            let leftBorder = (activeObject.width + activeObject.left) * 1.15
+            let rightBorder = (activeObject.left * 2) + activeObject.width
+
+            let topBorder = ((activeObject.height * 2) + activeObject.top) / 2
+            let bottomBorder = (activeObject.height * 2.3) + activeObject.top
+
+            console.log("top border: ", topBorder);
+            console.log("bottom border: ", bottomBorder);
+            console.log("left border: ", leftBorder);
+            console.log("right border: ", rightBorder);
+
+            console.log("Group Object: ", groupObject._objects);
+            console.log("Active Object: ", activeObject);
             if (leftBorder <= groupObject.left) {
+                groupObject._objects.forEach(element => {
+                    element.left += 5
+                })
                 groupObject.width += 20
-                activeObject.left += 5
-            }
-            else if (leftBorder >= groupObject.width) {
-                groupObject.width = groupObject.width + 25;
-                activeObject.left = activeObject.left - 50;
-            }
-            else if (topBorder <= groupObject.top) {
-                groupObject.height += 20
-                activeObject.top += 5
-            }
-            else if (topBorder >= groupObject.height) {
-                groupObject.height += 20
-                activeObject.top -= 50
+                console.log("call 1");
+            } else if (rightBorder >= groupObject.width) {
+                groupObject._objects.forEach(element => {
+                    element.left -= 10
+                });
+                groupObject.width += 20
+                console.log("call 2");
+            } else if (topBorder <= groupObject.top) {
+                activeObject.top += 10
+                groupObject.height += 10
+                console.log("call 3");
+            } else if (bottomBorder >= groupObject.height) {
+                groupObject._objects.forEach(element => {
+                    element.top -= 5
+                })
+                activeObject.top -= 30
+                groupObject.height += 10
+                console.log("call 4");
             }
 
             setMove(false)
-            groupObject.dirty = true
-            activeObject.dirty = true
             canvasObj.renderAll()
 
         }

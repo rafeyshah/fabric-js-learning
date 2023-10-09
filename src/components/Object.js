@@ -287,6 +287,9 @@ function Object() {
             newHeight = image.height;
         }
 
+        console.log("Image Height:  ", newHeight);
+        console.log("Image Width:  ", newWidth);
+
         let x = 0;
         let y = 0;
 
