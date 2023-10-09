@@ -97,11 +97,16 @@ function TextProperties({ currentObject }) {
             console.log("Width: ", activeObject.width);
             console.log("***************");
 
-            let leftBorder = (activeObject.width + activeObject.left) * 1.15
-            let rightBorder = (activeObject.left * 2) + activeObject.width
+            let leftBorder = -(groupObject.width / 2)
+            let rightBorder = (groupObject.width / 2 + groupObject.left) / 5
 
-            let topBorder = ((activeObject.height * 2) + activeObject.top) / 2
-            let bottomBorder = (activeObject.height * 2.3) + activeObject.top
+            let topBorder = -(groupObject.height / 2)
+            let bottomBorder = ((groupObject.height / 2) + groupObject.top) / 5
+            // It should be like this, 
+            // leftborder = left
+            // rightborder = left + width
+            // topborder = top
+            // bottomborder = top + height
 
             console.log("top border: ", topBorder);
             console.log("bottom border: ", bottomBorder);
@@ -110,28 +115,31 @@ function TextProperties({ currentObject }) {
 
             console.log("Group Object: ", groupObject._objects);
             console.log("Active Object: ", activeObject);
-            if (leftBorder <= groupObject.left) {
-                groupObject._objects.forEach(element => {
-                    element.left += 5
-                })
-                groupObject.width += 20
+
+            if (activeObject.left <= leftBorder) {
+                activeObject.left += 12.5
+                groupObject.width += 5
                 console.log("call 1");
-            } else if (rightBorder >= groupObject.width) {
+            }
+            else if (activeObject.left >= rightBorder) {
                 groupObject._objects.forEach(element => {
-                    element.left -= 10
+                    element.left -= 2.5
                 });
-                groupObject.width += 20
+                activeObject.left -= 35
+                groupObject.width += 5
                 console.log("call 2");
-            } else if (topBorder <= groupObject.top) {
-                activeObject.top += 10
-                groupObject.height += 10
+            }
+            else if (activeObject.top <= topBorder) {
+                activeObject.top += 12.5
+                groupObject.height += 5
                 console.log("call 3");
-            } else if (bottomBorder >= groupObject.height) {
+            } 
+            else if (activeObject.top >= bottomBorder) {
                 groupObject._objects.forEach(element => {
-                    element.top -= 5
+                    element.top -= 2.5
                 })
-                activeObject.top -= 30
-                groupObject.height += 10
+                activeObject.top -= 10
+                groupObject.height += 5
                 console.log("call 4");
             }
 
