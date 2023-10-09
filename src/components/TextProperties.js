@@ -98,7 +98,7 @@ function TextProperties({ currentObject }) {
             console.log("***************");
 
             let leftBorder = -(groupObject.width / 2)
-            let rightBorder = (groupObject.width / 2 + groupObject.left) / 5
+            let rightBorder = (groupObject.width / 2 + groupObject.left) / 8
 
             let topBorder = -(groupObject.height / 2)
             let bottomBorder = ((groupObject.height / 2) + groupObject.top) / 5
@@ -117,7 +117,10 @@ function TextProperties({ currentObject }) {
             console.log("Active Object: ", activeObject);
 
             if (activeObject.left <= leftBorder) {
-                activeObject.left += 12.5
+                groupObject._objects.forEach(element => {
+                    element.left -= 2.5
+                });
+                activeObject.left += 15
                 groupObject.width += 5
                 console.log("call 1");
             }
@@ -125,12 +128,15 @@ function TextProperties({ currentObject }) {
                 groupObject._objects.forEach(element => {
                     element.left -= 2.5
                 });
-                activeObject.left -= 35
+                activeObject.left -= 15
                 groupObject.width += 5
                 console.log("call 2");
             }
             else if (activeObject.top <= topBorder) {
-                activeObject.top += 12.5
+                groupObject._objects.forEach(element => {
+                    element.top -= 2.5
+                });
+                activeObject.top += 13
                 groupObject.height += 5
                 console.log("call 3");
             } 
