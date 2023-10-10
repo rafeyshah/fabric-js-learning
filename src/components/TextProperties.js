@@ -98,7 +98,7 @@ function TextProperties({ currentObject }) {
             console.log("***************");
 
             let leftBorder = -(groupObject.width / 2)
-            let rightBorder = (groupObject.width / 2.4 - groupObject.left) 
+            let rightBorder = (groupObject.width / 2.5 - groupObject.left) 
 
             let topBorder = -(groupObject.height / 2)
             let bottomBorder = ((groupObject.height / 2) + groupObject.top) / 5
